@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="tab-title">Global Nutrition Finder | Vitamins & Amino Acids</title>
     
-    <title id="page-title">Nährwert-Finder | Global Nutrition Database</title>
-    <meta name="description" content="Find nutrition facts, vitamins, and amino acids for any food worldwide. Multi-language support.">
-    <meta name="keywords" content="Nutrition, Nährwerte, Calorie counter, Vitamine, Aminosäuren, Food database, Info nutritionnelle">
-
+    <meta name="description" content="Free global food database. Search for vitamins, minerals, and amino acids in any food. Supporting 10+ languages.">
+    <meta name="keywords" content="Nutrition, Vitamins, Amino Acids, Nährwerte, Vitamine, Aminosäuren, Food Facts">
+    <meta name="author" content="Nutrition Finder Team">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,27 +18,32 @@
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Search food / Lebensmittel suchen...">
-            <button id="search-button">Search</button>
+            <input type="text" id="food-input" placeholder="Loading language...">
+            <button id="search-button">...</button>
         </div>
     </header>
 
     <main>
-        <div id="loading-spinner" class="hidden">...</div>
+        <div id="loading-spinner" class="hidden">
+            <div class="spinner"></div>
+            <p id="loading-text">Searching...</p>
+        </div>
+
         <div id="error-message" class="hidden"></div>
         
         <div id="results-container" class="hidden">
-            <h2 id="result-title"></h2>
+            <h1 id="result-title"></h1>
+            <p id="result-subtitle"></p>
 
-            <section id="macro-section" class="nutrient-group hidden">
-                <h3 id="head-macros">Makronährstoffe</h3>
+            <section id="macro-section" class="nutrient-group">
+                <h3 id="head-macros">Macronutrients</h3>
                 <table class="nutrient-table">
                     <thead>
                         <tr>
-                            <th id="th-nutrient">Nährstoff</th>
-                            <th id="th-amount">Menge (100g)</th>
-                            <th id="th-coverage">Abdeckung*</th>
-                            <th id="th-norm">Tagesbedarf</th>
+                            <th class="th-n">Nutrient</th>
+                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-c">Coverage*</th>
+                            <th class="th-r">RDI</th>
                         </tr>
                     </thead>
                     <tbody id="macro-body"></tbody>
@@ -45,14 +51,14 @@
             </section>
             
             <section id="vitamin-section" class="nutrient-group hidden">
-                <h3 id="head-vitamins">Vitamine</h3>
+                <h3 id="head-vitamins">Vitamins</h3>
                 <table class="nutrient-table">
                     <tbody id="vitamin-body"></tbody>
                 </table>
             </section>
             
             <section id="amino-section" class="nutrient-group hidden">
-                <h3 id="head-aminos">Mineralien & Aminosäuren</h3>
+                <h3 id="head-aminos">Minerals & Amino Acids</h3>
                 <table class="nutrient-table">
                     <tbody id="amino-body"></tbody>
                 </table>
@@ -63,7 +69,7 @@
     </main>
 
     <footer>
-        <p>Data: Open Food Facts API (Global)</p>
+        <p>&copy; 2024 Global Nutrition Database | Data by Open Food Facts</p>
     </footer>
 
     <script src="script.js"></script>
