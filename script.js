@@ -1,104 +1,131 @@
-const USER_AGENT = "GlobalNutritionProject/1.0 (Contact: info@yourdomain.com)";
+// --- CONFIGURATION ---
+const USER_AGENT = "GlobalNutritionApp/1.0 (Contact: info@yourdomain.com)";
 const API_BASE_URL = "https://world.openfoodfacts.org/cgi/search.pl";
 
-// --- Erweitertes Wörterbuch (10 Hauptsprachen) ---
 const translations = {
-    en: { searchBtn: "Search", placeholder: "E.g. Apple...", headMacros: "Macronutrients", headVitamins: "Vitamins", headAminos: "Minerals", thNutrient: "Nutrient", thAmount: "Amount (100g)", thCoverage: "Coverage*", thNorm: "Daily Value", loading: "Searching...", error: "No results found." },
-    de: { searchBtn: "Suchen", placeholder: "Z.B. Apfel...", headMacros: "Makronährstoffe", headVitamins: "Vitamine", headAminos: "Mineralien", thNutrient: "Nährstoff", thAmount: "Menge (100g)", thCoverage: "Abdeckung*", thNorm: "Tagesbedarf", loading: "Suche...", error: "Nichts gefunden." },
-    es: { searchBtn: "Buscar", placeholder: "Ej. Manzana...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerales", thNutrient: "Nutriente", thAmount: "Cantidad", thCoverage: "Cobertura*", thNorm: "Valor diario", loading: "Buscando...", error: "No se encontraron resultados." },
-    fr: { searchBtn: "Chercher", placeholder: "Ex. Pomme...", headMacros: "Macronutriments", headVitamins: "Vitamines", headAminos: "Minéraux", thNutrient: "Nutriment", thAmount: "Quantité", thCoverage: "Couverture*", thNorm: "Valeur quotidienne", loading: "Recherche...", error: "Aucun résultat." },
-    it: { searchBtn: "Cerca", placeholder: "Es. Mela...", headMacros: "Macronutrienti", headVitamins: "Vitamine", headAminos: "Minerali", thNutrient: "Nutriente", thAmount: "Quantità", thCoverage: "Copertura*", thNorm: "Valore giornaliero", loading: "Ricerca...", error: "Nessun risultato." },
-    pt: { searchBtn: "Buscar", placeholder: "Ex. Maçã...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerais", thNutrient: "Nutriente", thAmount: "Quantidade", thCoverage: "Cobertura*", thNorm: "Valor diário", loading: "Buscando...", error: "Sem resultados." },
-    nl: { searchBtn: "Zoeken", placeholder: "Bijv. Appel...", headMacros: "Macronutriënten", headVitamins: "Vitaminen", headAminos: "Mineralen", thNutrient: "Voedingsstof", thAmount: "Hoeveelheid", thCoverage: "Dekking*", thNorm: "Dagelijkse waarde", loading: "Zoeken...", error: "Geen resultaten." },
-    pl: { searchBtn: "Szukaj", placeholder: "Np. Jabłko...", headMacros: "Makroskładniki", headVitamins: "Witaminy", headAminos: "Minerały", thNutrient: "Składnik", thAmount: "Ilość", thCoverage: "Pokrycie*", thNorm: "Dzienne zapotrzebowanie", loading: "Szukanie...", error: "Brak wyników." },
-    ru: { searchBtn: "Поиск", placeholder: "Напр. Яблоко...", headMacros: "Макронутриенты", headVitamins: "Витамины", headAminos: "Минералы", thNutrient: "Вещество", thAmount: "Кол-во", thCoverage: "Покрытие*", thNorm: "Норма", loading: "Поиск...", error: "Ничего не найдено." },
-    zh: { searchBtn: "搜索", placeholder: "例如：苹果...", headMacros: "宏量营养素", headVitamins: "维生素", headAminos: "矿物质", thNutrient: "营养素", thAmount: "含量", thCoverage: "摄入量*", thNorm: "每日标准", loading: "搜索中...", error: "未找到结果。" }
+    en: { searchBtn: "Search", placeholder: "Search food...", headMacros: "Macronutrients", headVitamins: "Vitamins", headAminos: "Minerals & Aminos", thN: "Nutrient", thA: "Amount", thC: "Coverage", thR: "RDI", loading: "Searching...", error: "No results found.", sub: "Per 100g serving" },
+    de: { searchBtn: "Suchen", placeholder: "Lebensmittel suchen...", headMacros: "Makronährstoffe", headVitamins: "Vitamine", headAminos: "Mineralien & Aminos", thN: "Nährstoff", thA: "Menge", thC: "Abdeckung", thR: "Bedarf", loading: "Suche läuft...", error: "Nichts gefunden.", sub: "Pro 100g Portion" },
+    es: { searchBtn: "Buscar", placeholder: "Buscar comida...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerales", thN: "Nutriente", thA: "Cantidad", thC: "Cobertura", thR: "RDI", loading: "Buscando...", error: "Sin resultados.", sub: "Por 100g" },
+    fr: { searchBtn: "Chercher", placeholder: "Chercher...", headMacros: "Macronutriments", headVitamins: "Vitamines", headAminos: "Minéraux", thN: "Nutriment", thA: "Quantité", thC: "Couverture", thR: "AJR", loading: "Recherche...", error: "Aucun résultat.", sub: "Par 100g" },
+    it: { searchBtn: "Cerca", placeholder: "Cerca...", headMacros: "Macronutrienti", headVitamins: "Vitamine", headAminos: "Minerali", thN: "Nutriente", thA: "Quantità", thC: "Copertura", thR: "RDA", loading: "Ricerca...", error: "Nessun risultato.", sub: "Per 100g" },
+    pt: { searchBtn: "Buscar", placeholder: "Buscar...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerais", thN: "Nutriente", thA: "Quantidade", thC: "Cobertura", thR: "IDR", loading: "Buscando...", error: "Sem resultados.", sub: "Por 100g" },
+    nl: { searchBtn: "Zoeken", placeholder: "Zoeken...", headMacros: "Macronutriënten", headVitamins: "Vitaminen", headAminos: "Mineralen", thN: "Voedingsstof", thA: "Hoeveelheid", thC: "Dekking", thR: "ADH", loading: "Zoeken...", error: "Geen resultaten.", sub: "Per 100g" },
+    pl: { searchBtn: "Szukaj", placeholder: "Szukaj...", headMacros: "Makroskładniki", headVitamins: "Witaminy", headAminos: "Minerały", thN: "Składnik", thA: "Ilość", thC: "Pokrycie", thR: "GDA", loading: "Szukanie...", error: "Brak wyników.", sub: "Na 100g" },
+    ru: { searchBtn: "Поиск", placeholder: "Поиск...", headMacros: "Макронутриенты", headVitamins: "Витамины", headAminos: "Минералы", thN: "Вещество", thA: "Кол-во", thC: "Норма", thR: "РДН", loading: "Поиск...", error: "Ничего не найдено.", sub: "На 100г" },
+    zh: { searchBtn: "搜索", placeholder: "搜索食物...", headMacros: "宏量营养素", headVitamins: "维生素", headAminos: "矿物质", thN: "营养素", thA: "含量", thC: "摄入量", thR: "标准", loading: "搜索中...", error: "未找到结果。", sub: "每100克" }
 };
 
-// Automatische Spracherkennung
+// Language Setup
 const browserLang = navigator.language.split('-')[0];
-const t = translations[browserLang] || translations['en']; // Englisch als Rückfalloption
+const t = translations[browserLang] || translations['en'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // UI Elemente übersetzen
     document.getElementById('search-button').textContent = t.searchBtn;
     document.getElementById('food-input').placeholder = t.placeholder;
     document.getElementById('head-macros').textContent = t.headMacros;
     document.getElementById('head-vitamins').textContent = t.headVitamins;
     document.getElementById('head-aminos').textContent = t.headAminos;
-    document.getElementById('th-nutrient').textContent = t.thNutrient;
-    document.getElementById('th-amount').textContent = t.thAmount;
-    document.getElementById('th-coverage').textContent = t.thCoverage;
-    document.getElementById('th-norm').textContent = t.thNorm;
+    document.querySelectorAll('.th-n').forEach(el => el.textContent = t.thN);
+    document.querySelectorAll('.th-a').forEach(el => el.textContent = t.thA);
+    document.querySelectorAll('.th-c').forEach(el => el.textContent = t.thC);
+    document.querySelectorAll('.th-r').forEach(el => el.textContent = t.thR);
 });
 
-// --- Tagesbedarf (RDI) ---
+// Nutrient RDI Database
 const RDI = {
-    'energy-kcal_100g': 2000,
-    'proteins_100g': 50,
-    'fat_100g': 70,
-    'carbohydrates_100g': 275,
-    'vitamin-c_100g': 80,
-    'calcium_100g': 800,
-    'magnesium_100g': 375
+    'energy-kcal_100g': { val: 2000, unit: 'kcal' },
+    'proteins_100g': { val: 50, unit: 'g' },
+    'fat_100g': { val: 70, unit: 'g' },
+    'carbohydrates_100g': { val: 275, unit: 'g' },
+    'sugars_100g': { val: 50, unit: 'g' },
+    'fiber_100g': { val: 30, unit: 'g' },
+    'salt_100g': { val: 6, unit: 'g' },
+    'vitamin-c_100g': { val: 80, unit: 'mg' },
+    'vitamin-a_100g': { val: 800, unit: 'µg' },
+    'vitamin-d_100g': { val: 5, unit: 'µg' },
+    'calcium_100g': { val: 800, unit: 'mg' },
+    'iron_100g': { val: 14, unit: 'mg' },
+    'magnesium_100g': { val: 375, unit: 'mg' },
+    'zinc_100g': { val: 10, unit: 'mg' }
 };
 
+const inputElement = document.getElementById('food-input');
+const searchButton = document.getElementById('search-button');
+
+searchButton.addEventListener('click', searchFood);
+inputElement.addEventListener('keypress', (e) => { if(e.key === 'Enter') searchFood(); });
+
 async function searchFood() {
-    const query = document.getElementById('food-input').value.trim();
+    const query = inputElement.value.trim();
     if (!query) return;
 
-    const loader = document.getElementById('loading-spinner');
-    loader.textContent = t.loading;
-    loader.classList.remove('hidden');
+    document.getElementById('loading-spinner').classList.remove('hidden');
+    document.getElementById('results-container').classList.add('hidden');
+    document.getElementById('error-message').classList.add('hidden');
 
     try {
-        // Der Parameter 'search_simple=1' sucht global in allen verfügbaren Sprachen
         const url = `${API_BASE_URL}?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`;
-        const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
-        const data = await response.json();
+        const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+        const data = await res.json();
         
         if (data.products && data.products.length > 0) {
             displayResults(data.products[0]);
         } else {
-            alert(t.error);
+            showError(t.error);
         }
     } catch (e) {
-        console.error(e);
+        showError("Connection error.");
     } finally {
-        loader.classList.add('hidden');
+        document.getElementById('loading-spinner').classList.add('hidden');
     }
 }
 
 function displayResults(product) {
-    const container = document.getElementById('results-container');
-    const macroBody = document.getElementById('macro-body');
-    macroBody.innerHTML = '';
-    
-    // Nährstoff-Schlüssel (Beispiel)
-    const keys = [
-        { key: 'energy-kcal_100g', label: t.headMacros, unit: 'kcal' },
-        { key: 'proteins_100g', label: 'Protein', unit: 'g' },
-        { key: 'fat_100g', label: 'Fat', unit: 'g' }
-    ];
+    const name = product.product_name || "Food Item";
+    document.getElementById('result-title').textContent = name;
+    document.getElementById('result-subtitle').textContent = t.sub;
+    document.title = `${name} | Nutrition Facts`;
 
-    keys.forEach(n => {
-        const val = product.nutriments[n.key];
+    renderTable('macro-body', product.nutriments, ['energy-kcal_100g', 'proteins_100g', 'fat_100g', 'carbohydrates_100g', 'sugars_100g', 'fiber_100g', 'salt_100g']);
+    renderTable('vitamin-body', product.nutriments, ['vitamin-c_100g', 'vitamin-a_100g', 'vitamin-d_100g'], 'vitamin-section');
+    renderTable('amino-body', product.nutriments, ['calcium_100g', 'iron_100g', 'magnesium_100g', 'zinc_100g'], 'amino-section');
+
+    document.getElementById('results-container').classList.remove('hidden');
+}
+
+function renderTable(targetId, nutriments, keys, sectionId = null) {
+    const tbody = document.getElementById(targetId);
+    tbody.innerHTML = '';
+    let found = false;
+
+    keys.forEach(k => {
+        const val = nutriments[k];
         if (val !== undefined) {
-            const perc = Math.min(100, (val / RDI[n.key]) * 100);
-            macroBody.innerHTML += `
+            found = true;
+            const rdiObj = RDI[k] || { val: 100, unit: '' };
+            const perc = Math.min(100, (val / rdiObj.val) * 100);
+            const label = k.replace('_100g', '').replace('-', ' ').toUpperCase();
+            
+            tbody.innerHTML += `
                 <tr>
-                    <td>${n.label}</td>
-                    <td>${val.toFixed(1)} ${n.unit}</td>
+                    <td>${label}</td>
+                    <td>${val.toFixed(1)} ${rdiObj.unit}</td>
                     <td class="coverage-cell">
                         <div class="coverage-bar-container"><div class="coverage-bar" style="width:${perc}%"></div></div>
                         <span class="coverage-value">${perc.toFixed(0)}%</span>
                     </td>
-                    <td class="norm-cell">${RDI[n.key]} ${n.unit}</td>
+                    <td class="norm-cell">${rdiObj.val} ${rdiObj.unit}</td>
                 </tr>`;
         }
     });
 
-    document.getElementById('result-title').textContent = product.product_name || "Info";
-    container.classList.remove('hidden');
-    document.getElementById('macro-section').classList.remove('hidden');
+    if (sectionId) {
+        document.getElementById(sectionId).classList.toggle('hidden', !found);
+    }
+}
+
+function showError(msg) {
+    const err = document.getElementById('error-message');
+    err.textContent = msg;
+    err.classList.remove('hidden');
 }
