@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nährwert-Finder | Dein Nährstoff-Projekt</title>
+    
+    <title id="page-title">Nährwert-Finder | Global Nutrition Database</title>
+    <meta name="description" content="Find nutrition facts, vitamins, and amino acids for any food worldwide. Multi-language support.">
+    <meta name="keywords" content="Nutrition, Nährwerte, Calorie counter, Vitamine, Aminosäuren, Food database, Info nutritionnelle">
+
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,27 +17,27 @@
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Z.B. Apfel oder 100g Hähnchenbrust">
-            <button id="search-button">Suchen</button>
+            <input type="text" id="food-input" placeholder="Search food / Lebensmittel suchen...">
+            <button id="search-button">Search</button>
         </div>
     </header>
 
     <main>
-        <div id="loading-spinner" class="hidden">Wird geladen...</div>
+        <div id="loading-spinner" class="hidden">...</div>
         <div id="error-message" class="hidden"></div>
         
         <div id="results-container" class="hidden">
             <h2 id="result-title"></h2>
 
             <section id="macro-section" class="nutrient-group hidden">
-                <h3>Makronährstoffe & Energie</h3>
+                <h3 id="head-macros">Makronährstoffe</h3>
                 <table class="nutrient-table">
                     <thead>
                         <tr>
-                            <th>Nährstoff</th>
-                            <th>Menge je 100g</th>
-                            <th class="coverage-header">Abdeckung*</th>
-                            <th class="norm-header">Normwert (Tagesbedarf)</th>
+                            <th id="th-nutrient">Nährstoff</th>
+                            <th id="th-amount">Menge (100g)</th>
+                            <th id="th-coverage">Abdeckung*</th>
+                            <th id="th-norm">Tagesbedarf</th>
                         </tr>
                     </thead>
                     <tbody id="macro-body"></tbody>
@@ -41,41 +45,25 @@
             </section>
             
             <section id="vitamin-section" class="nutrient-group hidden">
-                <h3>Vitamine</h3>
+                <h3 id="head-vitamins">Vitamine</h3>
                 <table class="nutrient-table">
-                    <thead>
-                        <tr>
-                            <th>Nährstoff</th>
-                            <th>Menge je 100g</th>
-                            <th class="coverage-header">Abdeckung*</th>
-                            <th class="norm-header">Normwert (Tagesbedarf)</th>
-                        </tr>
-                    </thead>
                     <tbody id="vitamin-body"></tbody>
                 </table>
             </section>
             
             <section id="amino-section" class="nutrient-group hidden">
-                <h3>Mineralien & Aminosäuren</h3>
+                <h3 id="head-aminos">Mineralien & Aminosäuren</h3>
                 <table class="nutrient-table">
-                    <thead>
-                        <tr>
-                            <th>Nährstoff</th>
-                            <th>Menge je 100g</th>
-                            <th class="coverage-header">Abdeckung*</th>
-                            <th class="norm-header">Normwert (Tagesbedarf)</th>
-                        </tr>
-                    </thead>
                     <tbody id="amino-body"></tbody>
                 </table>
             </section>
             
-            <p class="disclaimer">* Basierend auf einem durchschnittlichen Tagesbedarf (2000 kcal). Die Werte können individuell abweichen.</p>
+            <p class="disclaimer" id="txt-disclaimer">* Based on 2000 kcal RDI.</p>
         </div>
     </main>
 
     <footer>
-        <p>Daten bereitgestellt von Open Food Facts API</p>
+        <p>Data: Open Food Facts API (Global)</p>
     </footer>
 
     <script src="script.js"></script>
