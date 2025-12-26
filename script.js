@@ -1,79 +1,62 @@
-// --- CONFIGURATION ---
 const USER_AGENT = "GlobalNutritionApp/1.0 (Contact: info@yourdomain.com)";
-// WICHTIG: Hier muss HTTPS stehen!
 const API_BASE_URL = "https://world.openfoodfacts.org/cgi/search.pl";
 
 const translations = {
-    en: { searchBtn: "Search", placeholder: "Search food...", headMacros: "Macronutrients", headVitamins: "Vitamins", headAminos: "Minerals & Aminos", thN: "Nutrient", thA: "Amount", thC: "Coverage", thR: "RDI", loading: "Searching...", error: "No results found.", sub: "Per 100g serving" },
-    de: { searchBtn: "Suchen", placeholder: "Lebensmittel suchen...", headMacros: "Makronährstoffe", headVitamins: "Vitamine", headAminos: "Mineralien & Aminos", thN: "Nährstoff", thA: "Menge", thC: "Abdeckung", thR: "Bedarf", loading: "Suche läuft...", error: "Nichts gefunden oder API-Fehler.", sub: "Pro 100g Portion" },
-    es: { searchBtn: "Buscar", placeholder: "Buscar comida...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerales", thN: "Nutriente", thA: "Cantidad", thC: "Cobertura", thR: "RDI", loading: "Buscando...", error: "Sin resultados.", sub: "Por 100g" },
-    fr: { searchBtn: "Chercher", placeholder: "Chercher...", headMacros: "Macronutriments", headVitamins: "Vitamines", headAminos: "Minéraux", thN: "Nutriment", thA: "Quantité", thC: "Couverture", thR: "AJR", loading: "Recherche...", error: "Aucun résultat.", sub: "Par 100g" },
-    it: { searchBtn: "Cerca", placeholder: "Cerca...", headMacros: "Macronutrienti", headVitamins: "Vitamine", headAminos: "Minerali", thN: "Nutriente", thA: "Quantità", thC: "Copertura", thR: "RDA", loading: "Ricerca...", error: "Nessun risultato.", sub: "Per 100g" },
-    pt: { searchBtn: "Buscar", placeholder: "Buscar...", headMacros: "Macronutrientes", headVitamins: "Vitaminas", headAminos: "Minerais", thN: "Nutriente", thA: "Quantidade", thC: "Cobertura", thR: "IDR", loading: "Buscando...", error: "Sem resultados.", sub: "Por 100g" },
-    nl: { searchBtn: "Zoeken", placeholder: "Zoeken...", headMacros: "Macronutriënten", headVitamins: "Vitaminen", headAminos: "Mineralen", thN: "Voedingsstof", thA: "Hoeveelheid", thC: "Dekking", thR: "ADH", loading: "Zoeken...", error: "Geen resultaten.", sub: "Per 100g" },
-    pl: { searchBtn: "Szukaj", placeholder: "Szukaj...", headMacros: "Makroskładniki", headVitamins: "Witaminy", headAminos: "Minerały", thN: "Składnik", thA: "Ilość", thC: "Pokrycie", thR: "GDA", loading: "Szukanie...", error: "Brak wyników.", sub: "Na 100g" },
-    ru: { searchBtn: "Поиск", placeholder: "Поиск...", headMacros: "Макронутриенты", headVitamins: "Витамины", headAminos: "Минералы", thN: "Вещество", thA: "Кол-во", thC: "Норма", thR: "РДН", loading: "Поиск...", error: "Ничего не найдено.", sub: "На 100г" },
-    zh: { searchBtn: "搜索", placeholder: "搜索食物...", headMacros: "宏量营养素", headVitamins: "维生素", headAminos: "矿物质", thN: "营养素", thA: "含量", thC: "摄入量", thR: "标准", loading: "搜索中...", error: "未找到结果。", sub: "每100克" }
+    en: { searchBtn: "Search", placeholder: "Search food...", headMacros: "Macronutrients", headVitamins: "Vitamins", headAminos: "Minerals & Amino Acids", thN: "Nutrient", thA: "Amount", thC: "Coverage", thR: "RDI", loading: "Searching...", error: "No results found.", sub: "Per 100g serving" },
+    de: { searchBtn: "Suchen", placeholder: "Lebensmittel suchen...", headMacros: "Makronährstoffe", headVitamins: "Vitamine", headAminos: "Mineralien & Aminosäuren", thN: "Nährstoff", thA: "Menge", thC: "Abdeckung", thR: "Bedarf", loading: "Suche läuft...", error: "Nichts gefunden.", sub: "Pro 100g Portion" }
 };
 
 const browserLang = navigator.language.split('-')[0];
 const t = translations[browserLang] || translations['en'];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const sBtn = document.getElementById('search-button');
-    const fInp = document.getElementById('food-input');
-    if(sBtn) sBtn.textContent = t.searchBtn;
-    if(fInp) fInp.placeholder = t.placeholder;
-    
-    // Header Übersetzungen
-    const ids = ['head-macros', 'head-vitamins', 'head-aminos', 'txt-disclaimer'];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.textContent = t[id] || el.textContent;
-    });
+    document.getElementById('search-button').textContent = t.searchBtn;
+    document.getElementById('food-input').placeholder = t.placeholder;
+    document.getElementById('head-macros').textContent = t.headMacros;
+    document.getElementById('head-vitamins').textContent = t.headVitamins;
+    document.getElementById('head-aminos').textContent = t.headAminos;
 });
 
 const RDI = {
-    'energy-kcal_100g': { val: 2000, unit: 'kcal' },
-    'proteins_100g': { val: 50, unit: 'g' },
-    'fat_100g': { val: 70, unit: 'g' },
-    'carbohydrates_100g': { val: 275, unit: 'g' },
-    'sugars_100g': { val: 50, unit: 'g' },
-    'fiber_100g': { val: 30, unit: 'g' },
-    'salt_100g': { val: 6, unit: 'g' },
-    'vitamin-c_100g': { val: 80, unit: 'mg' },
-    'vitamin-a_100g': { val: 800, unit: 'µg' },
-    'vitamin-d_100g': { val: 5, unit: 'µg' },
-    'calcium_100g': { val: 800, unit: 'mg' },
-    'iron_100g': { val: 14, unit: 'mg' },
-    'magnesium_100g': { val: 375, unit: 'mg' },
-    'zinc_100g': { val: 10, unit: 'mg' }
+    'energy-kcal_100g': { val: 2000, unit: 'kcal', label: 'Calories' },
+    'proteins_100g': { val: 50, unit: 'g', label: 'Protein' },
+    'fat_100g': { val: 70, unit: 'g', label: 'Fat' },
+    'carbohydrates_100g': { val: 275, unit: 'g', label: 'Carbs' },
+    'sugars_100g': { val: 50, unit: 'g', label: 'Sugar' },
+    'fiber_100g': { val: 30, unit: 'g', label: 'Fiber' },
+    'salt_100g': { val: 6, unit: 'g', label: 'Salt' },
+    'vitamin-a_100g': { val: 800, unit: 'µg', label: 'Vitamin A' },
+    'vitamin-c_100g': { val: 80, unit: 'mg', label: 'Vitamin C' },
+    'vitamin-d_100g': { val: 5, unit: 'µg', label: 'Vitamin D' },
+    'vitamin-e_100g': { val: 12, unit: 'mg', label: 'Vitamin E' },
+    'vitamin-k_100g': { val: 75, unit: 'µg', label: 'Vitamin K' },
+    'calcium_100g': { val: 800, unit: 'mg', label: 'Calcium' },
+    'iron_100g': { val: 14, unit: 'mg', label: 'Iron' },
+    'magnesium_100g': { val: 375, unit: 'mg', label: 'Magnesium' },
+    'potassium_100g': { val: 2000, unit: 'mg', label: 'Potassium' },
+    'zinc_100g': { val: 10, unit: 'mg', label: 'Zinc' },
+    'tryptophan_100g': { val: 0.28, unit: 'g', label: 'Tryptophan' },
+    'lysine_100g': { val: 2.1, unit: 'g', label: 'Lysine' },
+    'leucine_100g': { val: 2.7, unit: 'g', label: 'Leucine' }
 };
 
+const inputElement = document.getElementById('food-input');
+const searchButton = document.getElementById('search-button');
+
+searchButton.onclick = searchFood;
+inputElement.onkeypress = (e) => { if(e.key === 'Enter') searchFood(); };
+
 async function searchFood() {
-    const input = document.getElementById('food-input');
-    const query = input.value.trim();
+    const query = inputElement.value.trim();
     if (!query) return;
 
-    const loader = document.getElementById('loading-spinner');
-    const results = document.getElementById('results-container');
-    const errorEl = document.getElementById('error-message');
-
-    loader.classList.remove('hidden');
-    results.classList.add('hidden');
-    errorEl.classList.add('hidden');
+    document.getElementById('loading-spinner').classList.remove('hidden');
+    document.getElementById('results-container').classList.add('hidden');
+    document.getElementById('error-message').classList.add('hidden');
 
     try {
-        // Optimierte Such-URL
         const url = `${API_BASE_URL}?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`;
-        
-        const res = await fetch(url, { 
-            method: 'GET',
-            headers: { 'Accept': 'application/json' } 
-        });
-
-        if (!res.ok) throw new Error("API Status Error");
-
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
         const data = await res.json();
         
         if (data.products && data.products.length > 0) {
@@ -82,58 +65,54 @@ async function searchFood() {
             showError(t.error);
         }
     } catch (e) {
-        showError("Error: " + e.message);
-        console.error("Search Error:", e);
+        showError("Connection Error");
     } finally {
-        loader.classList.add('hidden');
+        document.getElementById('loading-spinner').classList.add('hidden');
     }
 }
-
-// Event-Listener Setup
-document.getElementById('search-button').onclick = searchFood;
-document.getElementById('food-input').onkeypress = (e) => { if(e.key === 'Enter') searchFood(); };
 
 function displayResults(product) {
     const name = product.product_name || "Food Item";
     document.getElementById('result-title').textContent = name;
+    document.getElementById('result-subtitle').textContent = t.sub;
     document.title = `${name} | Nutrition`;
 
-    renderTable('macro-body', product.nutriments, ['energy-kcal_100g', 'proteins_100g', 'fat_100g', 'carbohydrates_100g', 'sugars_100g', 'fiber_100g', 'salt_100g']);
-    renderTable('vitamin-body', product.nutriments, ['vitamin-c_100g', 'vitamin-a_100g', 'vitamin-d_100g'], 'vitamin-section');
-    renderTable('amino-body', product.nutriments, ['calcium_100g', 'iron_100g', 'magnesium_100g', 'zinc_100g'], 'amino-section');
+    const nut = product.nutriments;
+
+    renderTable('macro-body', nut, ['energy-kcal_100g', 'proteins_100g', 'fat_100g', 'carbohydrates_100g', 'sugars_100g', 'fiber_100g', 'salt_100g'], null, 'bar-macro');
+    renderTable('vitamin-body', nut, ['vitamin-a_100g', 'vitamin-c_100g', 'vitamin-d_100g', 'vitamin-e_100g', 'vitamin-k_100g'], 'vitamin-section', 'bar-vitamin');
+    renderTable('amino-body', nut, ['calcium_100g', 'iron_100g', 'magnesium_100g', 'potassium_100g', 'zinc_100g', 'tryptophan_100g', 'lysine_100g', 'leucine_100g'], 'amino-section', 'bar-amino');
 
     document.getElementById('results-container').classList.remove('hidden');
 }
 
-function renderTable(targetId, nutriments, keys, sectionId = null) {
+function renderTable(targetId, nutriments, keys, sectionId, barClass) {
     const tbody = document.getElementById(targetId);
-    if(!tbody) return;
     tbody.innerHTML = '';
-    let found = false;
+    let foundCount = 0;
 
     keys.forEach(k => {
         const val = nutriments[k];
         if (val !== undefined && val !== null) {
-            found = true;
-            const rdiObj = RDI[k] || { val: 100, unit: '' };
+            foundCount++;
+            const rdiObj = RDI[k] || { val: 100, unit: '?', label: k };
             const perc = Math.min(100, (val / rdiObj.val) * 100);
-            const label = k.replace('_100g', '').replace(/-/g, ' ').toUpperCase();
             
             tbody.innerHTML += `
                 <tr>
-                    <td>${label}</td>
-                    <td>${parseFloat(val).toFixed(1)} ${rdiObj.unit}</td>
-                    <td class="coverage-cell">
-                        <div class="coverage-bar-container"><div class="coverage-bar" style="width:${perc}%"></div></div>
+                    <td><strong>${rdiObj.label}</strong></td>
+                    <td>${parseFloat(val).toFixed(2)} ${rdiObj.unit}</td>
+                    <td>
+                        <div class="coverage-bar-container"><div class="coverage-bar ${barClass}" style="width:${perc}%"></div></div>
                         <span class="coverage-value">${perc.toFixed(0)}%</span>
                     </td>
-                    <td class="norm-cell">${rdiObj.val} ${rdiObj.unit}</td>
+                    <td class="norm-cell">${rdiObj.val}${rdiObj.unit}</td>
                 </tr>`;
         }
     });
 
     if (sectionId) {
-        document.getElementById(sectionId).classList.toggle('hidden', !found);
+        document.getElementById(sectionId).classList.toggle('hidden', foundCount === 0);
     }
 }
 
