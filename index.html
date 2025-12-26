@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="tab-title">Global Nutrition Finder | Vitamins & Amino Acids</title>
     
+    <link rel="icon" href="https://fav.farm/🍎" />
+
     <meta name="description" content="Free global food database. Search for vitamins, minerals, and amino acids in any food. Supporting 10+ languages.">
     <meta name="keywords" content="Nutrition, Vitamins, Amino Acids, Nährwerte, Vitamine, Aminosäuren, Food Facts">
-    <meta name="author" content="Nutrition Finder Team">
     
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -53,6 +54,14 @@
             <section id="vitamin-section" class="nutrient-group hidden">
                 <h3 id="head-vitamins">Vitamins</h3>
                 <table class="nutrient-table">
+                    <thead>
+                        <tr>
+                            <th class="th-n">Nutrient</th>
+                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-c">Coverage*</th>
+                            <th class="th-r">RDI</th>
+                        </tr>
+                    </thead>
                     <tbody id="vitamin-body"></tbody>
                 </table>
             </section>
@@ -60,6 +69,14 @@
             <section id="amino-section" class="nutrient-group hidden">
                 <h3 id="head-aminos">Minerals & Amino Acids</h3>
                 <table class="nutrient-table">
+                    <thead>
+                        <tr>
+                            <th class="th-n">Nutrient</th>
+                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-c">Coverage*</th>
+                            <th class="th-r">RDI</th>
+                        </tr>
+                    </thead>
                     <tbody id="amino-body"></tbody>
                 </table>
             </section>
@@ -69,7 +86,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Global Nutrition Database | Data by Open Food Facts</p>
+        <p>&copy; 2024 Global Nutrition Database | Powered by Open Food Facts</p>
     </footer>
 
     <script src="script.js"></script>
