@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://n-hrstoffdatenbank-gem.vercel.app/sitemap.xml
