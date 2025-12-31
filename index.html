@@ -1,23 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="tab-title">Global Nutrition Finder | Complete Database</title>
+    <title id="tab-title">Global Nutrition Finder</title>
     
-    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
- 
-    <link rel="manifest" href="manifest.json">
+    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />    <link rel="manifest" href="manifest.json">
+    
     <meta name="theme-color" content="#3b82f6">
     <link rel="apple-touch-icon" href="https://fav.farm/🍎">
     <link rel="icon" href="https://fav.farm/🍎" />
-
-    <meta name="description" content="Detailed nutritional analysis: Vitamins, Minerals, and Amino Acids for thousands of foods.">
-    <meta property="og:title" content="Global Nutrition Finder">
-    <meta property="og:description" content="Check complete nutritional profiles instantly.">
-    <meta property="og:url" content="https://n-hrstoffdatenbank-gem.vercel.app/">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://fav.farm/🍎">
 
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +20,7 @@
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Loading...">
+            <input type="text" id="food-input" placeholder="Lade...">
             <button id="search-button">...</button>
         </div>
     </header>
@@ -36,7 +28,7 @@
     <main>
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p id="loading-text">Searching database...</p>
+            <p id="loading-text">Suche läuft...</p>
         </div>
 
         <div id="error-message" class="hidden"></div>
@@ -45,57 +37,40 @@
             <h1 id="result-title"></h1>
             <p id="result-subtitle"></p>
 
-            <section id="macro-section" class="nutrient-group">
-                <h3 id="head-macros">Macronutrients</h3>
+            <section id="section-macros" class="nutrient-group">
+                <h3 id="head-macros">Makronährstoffe</h3>
                 <table class="nutrient-table">
-                    <thead>
-                        <tr>
-                            <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount</th>
-                            <th class="th-c">Coverage*</th>
-                            <th class="th-r">RDI</th>
-                        </tr>
-                    </thead>
-                    <tbody id="macro-body"></tbody>
+                    <tbody id="body-macros"></tbody>
                 </table>
             </section>
             
-            <section id="vitamin-section" class="nutrient-group hidden">
-                <h3 id="head-vitamins">Vitamins</h3>
+            <section id="section-vitamins" class="nutrient-group">
+                <h3 id="head-vitamins">Vitamine</h3>
                 <table class="nutrient-table">
-                    <thead>
-                        <tr>
-                            <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount</th>
-                            <th class="th-c">Coverage*</th>
-                            <th class="th-r">RDI</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vitamin-body"></tbody>
+                    <tbody id="body-vitamins"></tbody>
                 </table>
             </section>
             
-            <section id="amino-section" class="nutrient-group hidden">
-                <h3 id="head-aminos">Minerals & Amino Acids</h3>
+            <section id="section-minerals" class="nutrient-group">
+                <h3 id="head-minerals">Mineralstoffe & Spurenelemente</h3>
                 <table class="nutrient-table">
-                    <thead>
-                        <tr>
-                            <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount</th>
-                            <th class="th-c">Coverage*</th>
-                            <th class="th-r">RDI</th>
-                        </tr>
-                    </thead>
-                    <tbody id="amino-body"></tbody>
+                    <tbody id="body-minerals"></tbody>
+                </table>
+            </section>
+
+            <section id="section-proteins" class="nutrient-group">
+                <h3 id="head-proteins">Aminosäuren</h3>
+                <table class="nutrient-table">
+                    <tbody id="body-proteins"></tbody>
                 </table>
             </section>
             
-            <p class="disclaimer" id="txt-disclaimer">* Based on 2000 kcal RDI.</p>
+            <p class="disclaimer" id="txt-disclaimer">* Referenzmenge für einen durchschnittlichen Erwachsenen (2000 kcal).</p>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2024 Global Nutrition Database | Powered by Open Food Facts</p>
+        <p>&copy; 2025 Global Nutrition Database | Daten: Open Food Facts</p>
     </footer>
 
     <script src="script.js"></script>
