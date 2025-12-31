@@ -20,27 +20,41 @@ document.addEventListener('DOMContentLoaded', () => {
 const RDI = {
     'energy-kcal_100g': { val: 2000, unit: 'kcal', label: 'Calories' },
     'proteins_100g': { val: 50, unit: 'g', label: 'Protein' },
-    'fat_100g': { val: 70, unit: 'g', label: 'Fat' },
+    'fat_100g': { val: 70, unit: 'g', label: 'Total Fat' },
+    'saturated-fat_100g': { val: 20, unit: 'g', label: 'Saturated Fat' },
     'carbohydrates_100g': { val: 275, unit: 'g', label: 'Carbs' },
     'sugars_100g': { val: 50, unit: 'g', label: 'Sugar' },
     'fiber_100g': { val: 30, unit: 'g', label: 'Fiber' },
     'salt_100g': { val: 6, unit: 'g', label: 'Salt' },
-    'vitamin-a_100g': { val: 900, unit: 'µg', label: 'Vitamin A' },
+    'vitamin-a_100g': { val: 800, unit: 'µg', label: 'Vitamin A' },
     'vitamin-c_100g': { val: 80, unit: 'mg', label: 'Vitamin C' },
     'vitamin-d_100g': { val: 5, unit: 'µg', label: 'Vitamin D' },
     'vitamin-e_100g': { val: 12, unit: 'mg', label: 'Vitamin E' },
     'vitamin-k_100g': { val: 75, unit: 'µg', label: 'Vitamin K' },
     'vitamin-b1_100g': { val: 1.1, unit: 'mg', label: 'Vitamin B1' },
-    'vitamin-b2_100g': { val: 1.2, unit: 'mg', label: 'Vitamin B2' },
-    'vitamin-pp_100g': { val: 15, unit: 'mg', label: 'Vitamin B3' },
+    'vitamin-b2_100g': { val: 1.4, unit: 'mg', label: 'Vitamin B2' },
+    'vitamin-pp_100g': { val: 16, unit: 'mg', label: 'Vitamin B3' },
+    'pantothenic-acid_100g': { val: 6, unit: 'mg', label: 'Vitamin B5' },
+    'vitamin-b6_100g': { val: 1.4, unit: 'mg', label: 'Vitamin B6' },
+    'biotin_100g': { val: 50, unit: 'µg', label: 'Vitamin B7' },
+    'vitamin-b9_100g': { val: 200, unit: 'µg', label: 'Vitamin B9' },
+    'vitamin-b12_100g': { val: 2.5, unit: 'µg', label: 'Vitamin B12' },
     'calcium_100g': { val: 800, unit: 'mg', label: 'Calcium' },
     'iron_100g': { val: 14, unit: 'mg', label: 'Iron' },
     'magnesium_100g': { val: 375, unit: 'mg', label: 'Magnesium' },
+    'phosphorus_100g': { val: 700, unit: 'mg', label: 'Phosphorus' },
     'potassium_100g': { val: 2000, unit: 'mg', label: 'Potassium' },
     'zinc_100g': { val: 10, unit: 'mg', label: 'Zinc' },
+    'copper_100g': { val: 1, unit: 'mg', label: 'Copper' },
+    'manganese_100g': { val: 2, unit: 'mg', label: 'Manganese' },
+    'selenium_100g': { val: 55, unit: 'µg', label: 'Selenium' },
+    'iodine_100g': { val: 150, unit: 'µg', label: 'Iodine' },
     'tryptophan_100g': { val: 0.28, unit: 'g', label: 'Tryptophan' },
     'lysine_100g': { val: 2.1, unit: 'g', label: 'Lysine' },
-    'leucine_100g': { val: 2.7, unit: 'g', label: 'Leucine' }
+    'leucine_100g': { val: 2.7, unit: 'g', label: 'Leucine' },
+    'isoleucine_100g': { val: 1.4, unit: 'g', label: 'Isoleucine' },
+    'valine_100g': { val: 1.8, unit: 'g', label: 'Valine' },
+    'threonine_100g': { val: 1.1, unit: 'g', label: 'Threonine' }
 };
 
 const inputElement = document.getElementById('food-input');
@@ -69,9 +83,14 @@ function displayResults(product) {
     document.getElementById('result-title').textContent = name;
     document.getElementById('result-subtitle').textContent = t.sub;
     const nut = product.nutriments;
-    renderTable('macro-body', nut, ['energy-kcal_100g', 'proteins_100g', 'fat_100g', 'carbohydrates_100g', 'sugars_100g', 'fiber_100g', 'salt_100g'], null, 'bar-macro');
-    renderTable('vitamin-body', nut, ['vitamin-a_100g', 'vitamin-c_100g', 'vitamin-d_100g', 'vitamin-e_100g', 'vitamin-k_100g', 'vitamin-b1_100g', 'vitamin-b2_100g', 'vitamin-pp_100g'], 'vitamin-section', 'bar-vitamin');
-    renderTable('amino-body', nut, ['calcium_100g', 'iron_100g', 'magnesium_100g', 'potassium_100g', 'zinc_100g', 'tryptophan_100g', 'lysine_100g', 'leucine_100g'], 'amino-section', 'bar-amino');
+
+    const macroKeys = ['energy-kcal_100g', 'proteins_100g', 'fat_100g', 'saturated-fat_100g', 'carbohydrates_100g', 'sugars_100g', 'fiber_100g', 'salt_100g'];
+    const vitKeys = ['vitamin-a_100g', 'vitamin-c_100g', 'vitamin-d_100g', 'vitamin-e_100g', 'vitamin-k_100g', 'vitamin-b1_100g', 'vitamin-b2_100g', 'vitamin-pp_100g', 'vitamin-b6_100g', 'vitamin-b9_100g', 'vitamin-b12_100g', 'pantothenic-acid_100g', 'biotin_100g'];
+    const mineralKeys = ['calcium_100g', 'iron_100g', 'magnesium_100g', 'phosphorus_100g', 'potassium_100g', 'zinc_100g', 'copper_100g', 'manganese_100g', 'selenium_100g', 'iodine_100g', 'tryptophan_100g', 'lysine_100g', 'leucine_100g', 'isoleucine_100g', 'valine_100g', 'threonine_100g'];
+
+    renderTable('macro-body', nut, macroKeys, null, 'bar-macro');
+    renderTable('vitamin-body', nut, vitKeys, 'vitamin-section', 'bar-vitamin');
+    renderTable('amino-body', nut, mineralKeys, 'amino-section', 'bar-amino');
     document.getElementById('results-container').classList.remove('hidden');
 }
 
@@ -81,7 +100,7 @@ function renderTable(targetId, nutriments, keys, sectionId, barClass) {
     let foundCount = 0;
     keys.forEach(k => {
         const val = nutriments[k];
-        if (val !== undefined && val !== null) {
+        if (val !== undefined && val !== null && val !== 0) {
             foundCount++;
             const rdiObj = RDI[k] || { val: 100, unit: '?', label: k };
             const perc = Math.min(100, (val / rdiObj.val) * 100);
