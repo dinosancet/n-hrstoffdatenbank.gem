@@ -1,16 +1,20 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="tab-title">Global Nutrition Finder | Vitamins & Amino Acids</title>
+    <title id="tab-title">Global Nutrition Finder | Complete Database</title>
     
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
+ 
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="apple-touch-icon" href="https://fav.farm/🍎">
     <link rel="icon" href="https://fav.farm/🍎" />
 
-    <meta name="description" content="Check vitamins, minerals, and amino acids of any food instantly. Free global food database.">
+    <meta name="description" content="Detailed nutritional analysis: Vitamins, Minerals, and Amino Acids for thousands of foods.">
     <meta property="og:title" content="Global Nutrition Finder">
-    <meta property="og:description" content="Find full nutritional profiles for thousands of foods worldwide.">
+    <meta property="og:description" content="Check complete nutritional profiles instantly.">
     <meta property="og:url" content="https://n-hrstoffdatenbank-gem.vercel.app/">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://fav.farm/🍎">
@@ -24,7 +28,7 @@
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Loading language...">
+            <input type="text" id="food-input" placeholder="Loading...">
             <button id="search-button">...</button>
         </div>
     </header>
@@ -32,7 +36,7 @@
     <main>
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p id="loading-text">Searching...</p>
+            <p id="loading-text">Searching database...</p>
         </div>
 
         <div id="error-message" class="hidden"></div>
@@ -47,7 +51,7 @@
                     <thead>
                         <tr>
                             <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-a">Amount</th>
                             <th class="th-c">Coverage*</th>
                             <th class="th-r">RDI</th>
                         </tr>
@@ -62,7 +66,7 @@
                     <thead>
                         <tr>
                             <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-a">Amount</th>
                             <th class="th-c">Coverage*</th>
                             <th class="th-r">RDI</th>
                         </tr>
@@ -77,7 +81,7 @@
                     <thead>
                         <tr>
                             <th class="th-n">Nutrient</th>
-                            <th class="th-a">Amount (100g)</th>
+                            <th class="th-a">Amount</th>
                             <th class="th-c">Coverage*</th>
                             <th class="th-r">RDI</th>
                         </tr>
@@ -95,5 +99,10 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
 </body>
 </html>
