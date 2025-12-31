@@ -53,15 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function searchFood() {
-    const query = document.getElementById('food-input').value.trim();
+    const input = document.getElementById('food-input');
+    const query = input.value.trim();
     if (!query) return;
+
     toggleLoading(true);
     try {
         const res = await fetch(`${API_BASE_URL}?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`);
         const data = await res.json();
-        if (data.products && data.products.length > 0) displayResults(data.products[0]);
-        else showError(uiTexts[lang].error);
-    } catch (e) { showError("Fehler"); } finally { toggleLoading(false); }
+        if (data.products && data.products.length > 0) {
+            displayResults(data.products[0]);
+        } else {
+            showError(uiTexts[lang].error);
+        }
+    } catch (e) {
+        showError("Verbindungsfehler");
+    } finally {
+        toggleLoading(false);
+    }
 }
 
 function displayResults(product) {
@@ -69,11 +78,13 @@ function displayResults(product) {
     document.getElementById('result-subtitle').textContent = uiTexts[lang].per100;
     
     const bodies = { macros: 'body-macros', vitamins: 'body-vitamins', minerals: 'body-minerals', proteins: 'body-proteins' };
-    Object.values(bodies).forEach(id => document.getElementById(id).innerHTML = '');
+    Object.values(bodies).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
 
-    // WICHTIG: Wir loopen durch die Map, nicht durch die Produkt-Daten!
     for (const [key, info] of Object.entries(nutrientMap)) {
-        const val = product.nutriments[key + '_100g'] || 0; // Wenn nicht da, dann 0
+        const val = product.nutriments[key + '_100g'] || 0;
         const perc = Math.min(100, (val / info.rdi) * 100);
         
         const row = `
@@ -88,14 +99,19 @@ function displayResults(product) {
                 </td>
             </tr>`;
         
-        document.getElementById(bodies[info.cat]).innerHTML += row;
+        const targetBody = document.getElementById(bodies[info.cat]);
+        if (targetBody) targetBody.innerHTML += row;
     }
     document.getElementById('results-container').classList.remove('hidden');
+    document.getElementById('error-message').classList.add('hidden');
 }
 
 function toggleLoading(show) {
     document.getElementById('loading-spinner').classList.toggle('hidden', !show);
-    if (show) document.getElementById('results-container').classList.add('hidden');
+    if (show) {
+        document.getElementById('results-container').classList.add('hidden');
+        document.getElementById('error-message').classList.add('hidden');
+    }
 }
 
 function showError(msg) {
@@ -104,5 +120,10 @@ function showError(msg) {
     err.classList.remove('hidden');
 }
 
-document.getElementById('search-button').onclick = searchFood;
-document.getElementById('food-input').onkeypress = (e) => e.key === 'Enter' && searchFood();
+// Event Listeners
+document.getElementById('search-button').addEventListener('click', searchFood);
+document.getElementById('food-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchFood();
+    }
+});
