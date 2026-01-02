@@ -1,12 +1,11 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Nutrition - Lab Analyse</title>
     
-    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />    
-    
+    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
     <meta name="description" content="Detaillierte Nährwertanalyse inklusive Vitaminen, Mineralstoffen und Aminosäuren.">
     
     <link rel="manifest" href="manifest.json">
@@ -21,7 +20,7 @@
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Hafer, Apfel)...">
+            <input type="text" id="food-input" placeholder="Lebensmittel eingeben (z.B. Ei, Haferflocken)..." autofocus>
             <button id="search-button">Analysieren</button>
         </div>
     </header>
@@ -29,7 +28,7 @@
     <main>
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p>Verbinde mit Wissenschafts-Datenbank...</p>
+            <p>Laborwerte werden abgerufen...</p>
         </div>
 
         <div id="results-container" class="hidden">
