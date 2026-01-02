@@ -15,23 +15,23 @@
 
     <header>
         <div class="search-bar">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs, Hafer)..." autofocus>
+            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs)..." autofocus>
             <button id="search-button">Suchen</button>
         </div>
     </header>
 
-    <main>
-        <div class="ad-slot">WERBUNG - BANNER OBEN</div>
+    <main id="content-area">
+        <div class="ad-slot">ANZEIGE - BANNER OBEN</div>
 
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p>Rufe Labordaten ab...</p>
+            <p>Laborwerte werden geladen...</p>
         </div>
 
         <div id="results-container" class="hidden">
             <div class="result-hero">
                 <h1 id="result-title"></h1>
-                <p>Analyse basierend auf 100g Referenzmenge</p>
+                <p>Referenzwerte pro 100g</p>
             </div>
 
             <section class="card">
@@ -39,7 +39,7 @@
                 <div id="body-macros"></div>
             </section>
 
-            <div class="ad-slot">WERBUNG - MITTE</div>
+            <div class="ad-slot">ANZEIGE - MITTE</div>
 
             <section class="card">
                 <h2>2. Vitamine</h2>
@@ -47,14 +47,14 @@
             </section>
 
             <section class="card">
-                <h2>3. Mineralstoffe & Spurenelemente</h2>
+                <h2>3. Mineralstoffe</h2>
                 <div id="body-minerals"></div>
             </section>
 
-            <div class="ad-slot">WERBUNG - UNTEN</div>
+            <div class="ad-slot">ANZEIGE - UNTEN</div>
 
             <section class="card">
-                <h2>4. Aminosäuren (Proteinprofil)</h2>
+                <h2>4. Aminosäuren</h2>
                 <div id="body-proteins"></div>
             </section>
         </div>
