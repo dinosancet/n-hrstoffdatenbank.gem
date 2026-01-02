@@ -1,110 +1,45 @@
-:root {
-    --primary: #2563eb;
-    --macros: #10b981;
-    --vitamins: #f59e0b;
-    --minerals: #ec4899;
-    --proteins: #8b5cf6;
+body { font-family: 'Inter', sans-serif; background: #f0f4f8; margin: 0; color: #334155; }
+
+/* FIX: Klickbarkeit sicherstellen */
+header { 
+    background: #fff; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+    position: sticky; top: 0; z-index: 999; 
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: #f1f5f9;
-    margin: 0;
-    color: #1e293b;
+.search-container { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; }
+
+input { 
+    flex: 1; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; 
+    font-size: 16px; outline: none; background: #fff !important;
 }
 
-/* FIX: Header muss über allem anderen liegen */
-header {
-    background: #fff;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 9999; 
+button { padding: 12px 20px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+
+main { max-width: 500px; margin: 20px auto; padding: 0 15px; }
+
+.ad-top, .ad-mid, .ad-bottom { 
+    background: #e2e8f0; height: 100px; margin: 20px 0; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 10px; color: #94a3b8; border: 1px dashed #cbd5e1;
 }
 
-.search-bar {
-    max-width: 500px;
-    margin: 0 auto;
-    display: flex;
-    gap: 10px;
-}
+.card { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
-/* FIX: Input muss klickbar sein */
-input {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-    position: relative;
-    z-index: 10000;
-}
-
-button {
-    padding: 12px 20px;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-main {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px 15px;
-}
-
-.ad-slot {
-    background: #e2e8f0;
-    color: #94a3b8;
-    height: 100px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 20px 0;
-    border: 1px dashed #cbd5e1;
-}
-
-.card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-top: 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+h2 { font-size: 14px; text-transform: uppercase; color: #64748b; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
 
 .row { margin-bottom: 15px; }
-.row-text { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
-.label { font-weight: 600; }
-.val { color: #475569; }
+.label-box { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
+.bar-bg { background: #f1f5f9; height: 8px; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; transition: width 0.8s ease; }
 
-.bar-outer { background: #f1f5f9; height: 8px; border-radius: 4px; overflow: hidden; }
-.bar-inner { height: 100%; transition: width 0.8s ease; }
-.bar-macros { background: var(--macros); }
-.bar-vitamins { background: var(--vitamins); }
-.bar-minerals { background: var(--minerals); }
-.bar-proteins { background: var(--proteins); }
+/* Farbklima wie Profi-Tools */
+.cat-macros { background: #10b981; }
+.cat-vitamins { background: #f59e0b; }
+.cat-minerals { background: #ec4899; }
+.cat-proteins { background: #8b5cf6; }
 
 .hidden { display: none !important; }
+.hero { text-align: center; margin-bottom: 30px; }
+.badge { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-block; margin-top: 5px; }
 
-.spinner { 
-    border: 4px solid #f3f3f3; 
-    border-top: 4px solid var(--primary); 
-    border-radius: 50%; 
-    width: 30px; 
-    height: 30px; 
-    animation: spin 1s linear infinite; 
-    margin: 40px auto 10px; 
-}
+.spinner { border: 4px solid #f3f3f3; border-top: 4px solid #2563eb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-#loading-spinner p { text-align: center; color: #64748b; font-size: 14px; }
