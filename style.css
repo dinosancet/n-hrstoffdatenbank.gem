@@ -6,40 +6,105 @@
     --proteins: #8b5cf6;
 }
 
-body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding-bottom: 50px; }
-
-header { background: #fff; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-.search-bar { max-width: 500px; margin: 0 auto; display: flex; gap: 8px; }
-input { flex: 1; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; outline: none; }
-button { padding: 12px 20px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
-
-main { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-
-.ad-slot { 
-    background: #e2e8f0; color: #64748b; height: 120px; border-radius: 8px; 
-    display: flex; align-items: center; justify-content: center; 
-    font-size: 11px; font-weight: bold; margin-bottom: 25px; border: 1px dashed #cbd5e1;
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    color: #1e293b;
 }
 
-.card { background: #fff; border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-h2 { font-size: 16px; margin: 0 0 15px 0; color: #1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+/* FIX: Header muss über allem anderen liegen */
+header {
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 9999; 
+}
+
+.search-bar {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+}
+
+/* FIX: Input muss klickbar sein */
+input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    position: relative;
+    z-index: 10000;
+}
+
+button {
+    padding: 12px 20px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+main {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+.ad-slot {
+    background: #e2e8f0;
+    color: #94a3b8;
+    height: 100px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 20px 0;
+    border: 1px dashed #cbd5e1;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-top: 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
 
 .row { margin-bottom: 15px; }
-.row-top { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px; }
-.name { font-weight: 600; color: #334155; }
-.value { font-weight: 700; color: #64748b; }
+.row-text { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
+.label { font-weight: 600; }
+.val { color: #475569; }
 
-.bar-bg { background: #f1f5f9; height: 8px; border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; transition: width 0.8s ease-in-out; }
+.bar-outer { background: #f1f5f9; height: 8px; border-radius: 4px; overflow: hidden; }
+.bar-inner { height: 100%; transition: width 0.8s ease; }
 .bar-macros { background: var(--macros); }
 .bar-vitamins { background: var(--vitamins); }
 .bar-minerals { background: var(--minerals); }
 .bar-proteins { background: var(--proteins); }
 
-.hidden { display: none; }
-.spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+.hidden { display: none !important; }
+
+.spinner { 
+    border: 4px solid #f3f3f3; 
+    border-top: 4px solid var(--primary); 
+    border-radius: 50%; 
+    width: 30px; 
+    height: 30px; 
+    animation: spin 1s linear infinite; 
+    margin: 40px auto 10px; 
+}
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-#result-title { font-size: 24px; margin-bottom: 5px; }
-.result-hero { text-align: center; margin-bottom: 30px; }
-.result-hero p { color: #64748b; margin: 0; font-size: 14px; }
+#loading-spinner p { text-align: center; color: #64748b; font-size: 14px; }
