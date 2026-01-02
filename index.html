@@ -2,57 +2,57 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nutrition Pro - Labor-Analyse</title>
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <div class="search-container">
-            <input type="text" id="food-input" placeholder="Suchen (z.B. Ei, Rinderfilet, Mandeln)..." autofocus>
-            <button id="search-button">Analysieren</button>
+    <header id="top-header">
+        <div class="search-box">
+            <input type="text" id="food-input" placeholder="Lebensmittel eingeben..." autocomplete="off">
+            <button id="search-btn">Suchen</button>
         </div>
     </header>
 
-    <main>
-        <div class="ad-top">WERBUNG - TOP</div>
+    <main id="content">
+        <div class="ad-space">WERBUNG - OBEN</div>
 
-        <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>Rufe wissenschaftliche Labordaten ab...</p>
+        <div id="status" class="hidden">
+            <div class="loader-circle"></div>
+            <p>Analysiere Labordaten...</p>
         </div>
 
-        <div id="results" class="hidden">
-            <div class="hero">
-                <h1 id="food-title"></h1>
-                <div class="badge">Datenquelle: Labor-Referenzwert</div>
+        <div id="output" class="hidden">
+            <div class="title-card">
+                <h1 id="product-name"></h1>
+                <span class="tag">Wissenschaftlicher Referenzwert</span>
             </div>
 
-            <section class="card">
-                <h2>Energie & Makros</h2>
-                <div id="cat-macros"></div>
+            <section class="data-block">
+                <h3>Makronährstoffe</h3>
+                <div id="box-macros"></div>
             </section>
 
-            <div class="ad-mid">WERBUNG - MITTE</div>
+            <div class="ad-space">WERBUNG - MITTE</div>
 
-            <section class="card">
-                <h2>Vitamine</h2>
-                <div id="cat-vitamins"></div>
+            <section class="data-block">
+                <h3>Vitamine</h3>
+                <div id="box-vitamins"></div>
             </section>
 
-            <section class="card">
-                <h2>Mineralstoffe & Spurenelemente</h2>
-                <div id="cat-minerals"></div>
+            <section class="data-block">
+                <h3>Mineralstoffe</h3>
+                <div id="box-minerals"></div>
             </section>
 
-            <div class="ad-bottom">WERBUNG - UNTEN</div>
+            <div class="ad-space">WERBUNG - UNTEN</div>
 
-            <section class="card">
-                <h2>Aminosäuren (Proteinprofil)</h2>
-                <div id="cat-proteins"></div>
+            <section class="data-block">
+                <h3>Aminosäuren</h3>
+                <div id="box-proteins"></div>
             </section>
         </div>
     </main>
