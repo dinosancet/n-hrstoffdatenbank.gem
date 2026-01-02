@@ -3,86 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="tab-title">Global Nutrition Finder</title>
+    <title>Pro Nutrition - Lab Analyse</title>
     
-    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
+    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />    
     
-    <meta name="theme-color" content="#3b82f6">
+    <meta name="description" content="Detaillierte Nährwertanalyse inklusive Vitaminen, Mineralstoffen und Aminosäuren.">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
     <link rel="apple-touch-icon" href="https://fav.farm/🍎">
     <link rel="icon" href="https://fav.farm/🍎" />
-
+    
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
         <div class="search-container">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen...">
-            <button id="search-button">Suchen</button>
+            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Hafer, Apfel)...">
+            <button id="search-button">Analysieren</button>
         </div>
     </header>
 
     <main>
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p id="loading-text">Detaillierte Analyse läuft...</p>
+            <p>Verbinde mit Wissenschafts-Datenbank...</p>
         </div>
 
-        <div id="error-message" class="hidden"></div>
-        
         <div id="results-container" class="hidden">
-            <div class="header-flex">
-                <div>
-                    <h1 id="result-title"></h1>
-                    <p id="result-subtitle"></p>
-                </div>
-                <div id="score-container"></div>
+            <div class="top-bar">
+                <h1 id="result-title"></h1>
+                <div id="source-badge">Wissenschaftliche Referenz</div>
             </div>
 
-            <section id="section-macros" class="nutrient-group">
-                <h3>Makronährstoffe & Energie</h3>
-                <table class="nutrient-table">
-                    <tbody id="body-macros"></tbody>
-                </table>
-            </section>
-            
-            <section id="section-vitamins" class="nutrient-group">
-                <h3>Vollständiges Vitaminprofil</h3>
-                <table class="nutrient-table">
-                    <tbody id="body-vitamins"></tbody>
-                </table>
-            </section>
-            
-            <section id="section-minerals" class="nutrient-group">
-                <h3>Mineralstoffe & Spurenelemente</h3>
-                <table class="nutrient-table">
-                    <tbody id="body-minerals"></tbody>
-                </table>
-            </section>
-
-            <section id="section-proteins" class="nutrient-group">
-                <h3>Aminosäuren (Protein-Bausteine)</h3>
-                <table class="nutrient-table">
-                    <tbody id="body-proteins"></tbody>
-                </table>
-            </section>
-            
-            <p class="disclaimer">* Referenzmengen (RDI) basieren auf der EU-Verordnung 1169/2011 für einen durchschnittlichen Erwachsenen (2000 kcal). 0-Werte bedeuten, dass der Stoff nicht enthalten ist oder nicht gemessen wurde.</p>
+            <div class="nutrient-grid">
+                <section class="card">
+                    <h3>Energie & Makros</h3>
+                    <table id="table-macros"></table>
+                </section>
+                <section class="card">
+                    <h3>Vitamine</h3>
+                    <table id="table-vitamins"></table>
+                </section>
+                <section class="card">
+                    <h3>Mineralstoffe</h3>
+                    <table id="table-minerals"></table>
+                </section>
+                <section class="card">
+                    <h3>Aminosäuren</h3>
+                    <table id="table-proteins"></table>
+                </section>
+            </div>
         </div>
+        <div id="error-message" class="hidden"></div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Global Nutrition Database | Datenquelle: Open Food Facts</p>
-    </footer>
-
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
-    </script>
 </body>
 </html>
