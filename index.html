@@ -3,63 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Pro - Experten Analyse</title>
-    
+    <title>Nutrition Pro - Labor-Analyse</title>
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
-    <meta name="description" content="Laborgeprüfte Nährwertanalyse für über 1000 Lebensmittel.">
-    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <div class="search-bar">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs)..." autofocus>
-            <button id="search-button">Suchen</button>
+        <div class="search-container">
+            <input type="text" id="food-input" placeholder="Suchen (z.B. Ei, Rinderfilet, Mandeln)..." autofocus>
+            <button id="search-button">Analysieren</button>
         </div>
     </header>
 
-    <main id="content-area">
-        <div class="ad-slot">ANZEIGE - BANNER OBEN</div>
+    <main>
+        <div class="ad-top">WERBUNG - TOP</div>
 
-        <div id="loading-spinner" class="hidden">
+        <div id="loading" class="hidden">
             <div class="spinner"></div>
-            <p>Laborwerte werden geladen...</p>
+            <p>Rufe wissenschaftliche Labordaten ab...</p>
         </div>
 
-        <div id="results-container" class="hidden">
-            <div class="result-hero">
-                <h1 id="result-title"></h1>
-                <p>Referenzwerte pro 100g</p>
+        <div id="results" class="hidden">
+            <div class="hero">
+                <h1 id="food-title"></h1>
+                <div class="badge">Datenquelle: Labor-Referenzwert</div>
             </div>
 
             <section class="card">
-                <h2>1. Energie & Makros</h2>
-                <div id="body-macros"></div>
+                <h2>Energie & Makros</h2>
+                <div id="cat-macros"></div>
             </section>
 
-            <div class="ad-slot">ANZEIGE - MITTE</div>
+            <div class="ad-mid">WERBUNG - MITTE</div>
 
             <section class="card">
-                <h2>2. Vitamine</h2>
-                <div id="body-vitamins"></div>
+                <h2>Vitamine</h2>
+                <div id="cat-vitamins"></div>
             </section>
 
             <section class="card">
-                <h2>3. Mineralstoffe</h2>
-                <div id="body-minerals"></div>
+                <h2>Mineralstoffe & Spurenelemente</h2>
+                <div id="cat-minerals"></div>
             </section>
 
-            <div class="ad-slot">ANZEIGE - UNTEN</div>
+            <div class="ad-bottom">WERBUNG - UNTEN</div>
 
             <section class="card">
-                <h2>4. Aminosäuren</h2>
-                <div id="body-proteins"></div>
+                <h2>Aminosäuren (Proteinprofil)</h2>
+                <div id="cat-proteins"></div>
             </section>
         </div>
-
-        <div id="error-message" class="hidden"></div>
     </main>
 
     <script src="script.js"></script>
