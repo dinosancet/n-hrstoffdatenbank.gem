@@ -3,59 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Nutrition - Lab Analyse</title>
+    <title>Nutrition Pro - Experten Analyse</title>
     
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
-    <meta name="description" content="Detaillierte Nährwertanalyse inklusive Vitaminen, Mineralstoffen und Aminosäuren.">
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
-    <link rel="apple-touch-icon" href="https://fav.farm/🍎">
-    <link rel="icon" href="https://fav.farm/🍎" />
+    <meta name="description" content="Laborgeprüfte Nährwertanalyse für über 1000 Lebensmittel.">
     
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <div class="search-container">
-            <input type="text" id="food-input" placeholder="Lebensmittel eingeben (z.B. Ei, Haferflocken)..." autofocus>
-            <button id="search-button">Analysieren</button>
+        <div class="search-bar">
+            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs, Hafer)..." autofocus>
+            <button id="search-button">Suchen</button>
         </div>
     </header>
 
     <main>
+        <div class="ad-slot">WERBUNG - BANNER OBEN</div>
+
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p>Laborwerte werden abgerufen...</p>
+            <p>Rufe Labordaten ab...</p>
         </div>
 
         <div id="results-container" class="hidden">
-            <div class="top-bar">
+            <div class="result-hero">
                 <h1 id="result-title"></h1>
-                <div id="source-badge">Wissenschaftliche Referenz</div>
+                <p>Analyse basierend auf 100g Referenzmenge</p>
             </div>
 
-            <div class="nutrient-grid">
-                <section class="card">
-                    <h3>Energie & Makros</h3>
-                    <table id="table-macros"></table>
-                </section>
-                <section class="card">
-                    <h3>Vitamine</h3>
-                    <table id="table-vitamins"></table>
-                </section>
-                <section class="card">
-                    <h3>Mineralstoffe</h3>
-                    <table id="table-minerals"></table>
-                </section>
-                <section class="card">
-                    <h3>Aminosäuren</h3>
-                    <table id="table-proteins"></table>
-                </section>
-            </div>
+            <section class="card">
+                <h2>1. Energie & Makros</h2>
+                <div id="body-macros"></div>
+            </section>
+
+            <div class="ad-slot">WERBUNG - MITTE</div>
+
+            <section class="card">
+                <h2>2. Vitamine</h2>
+                <div id="body-vitamins"></div>
+            </section>
+
+            <section class="card">
+                <h2>3. Mineralstoffe & Spurenelemente</h2>
+                <div id="body-minerals"></div>
+            </section>
+
+            <div class="ad-slot">WERBUNG - UNTEN</div>
+
+            <section class="card">
+                <h2>4. Aminosäuren (Proteinprofil)</h2>
+                <div id="body-proteins"></div>
+            </section>
         </div>
+
         <div id="error-message" class="hidden"></div>
     </main>
 
