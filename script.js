@@ -1,100 +1,88 @@
+// Struktur angelehnt an wissenschaftliche Standards (wie Naehrwertrechner)
 const nutrientMap = {
-    "energy-kcal": { de: "Kalorien", rdi: 2000, unit: "kcal", cat: "macros" },
-    "proteins": { de: "Eiweiß", rdi: 50, unit: "g", cat: "macros" },
-    "carbohydrates": { de: "Kohlenhydrate", rdi: 260, unit: "g", cat: "macros" },
-    "fat": { de: "Fett", rdi: 70, unit: "g", cat: "macros" },
-    "fiber": { de: "Ballaststoffe", rdi: 30, unit: "g", cat: "macros" },
-    "vitamin-a": { de: "Vitamin A", rdi: 800, unit: "µg", cat: "vitamins" },
-    "vitamin-d": { de: "Vitamin D", rdi: 5, unit: "µg", cat: "vitamins" },
-    "vitamin-e": { de: "Vitamin E", rdi: 12, unit: "mg", cat: "vitamins" },
-    "vitamin-c": { de: "Vitamin C", rdi: 80, unit: "mg", cat: "vitamins" },
-    "vitamin-b1": { de: "Vitamin B1", rdi: 1.1, unit: "mg", cat: "vitamins" },
-    "vitamin-b2": { de: "Vitamin B2", rdi: 1.4, unit: "mg", cat: "vitamins" },
-    "vitamin-b6": { de: "Vitamin B6", rdi: 1.4, unit: "mg", cat: "vitamins" },
-    "vitamin-b12": { de: "Vitamin B12", rdi: 2.5, unit: "µg", cat: "vitamins" },
-    "calcium": { de: "Calcium", rdi: 800, unit: "mg", cat: "minerals" },
-    "magnesium": { de: "Magnesium", rdi: 375, unit: "mg", cat: "minerals" },
-    "iron": { de: "Eisen", rdi: 14, unit: "mg", cat: "minerals" },
-    "zinc": { de: "Zink", rdi: 10, unit: "mg", cat: "minerals" },
-    "potassium": { de: "Kalium", rdi: 2000, unit: "mg", cat: "minerals" },
-    "tryptophan": { de: "Tryptophan", rdi: 0.28, unit: "g", cat: "proteins" },
-    "lysine": { de: "Lysin", rdi: 2.1, unit: "g", cat: "proteins" },
-    "leucine": { de: "Leucin", rdi: 2.7, unit: "g", cat: "proteins" },
-    "valine": { de: "Valin", rdi: 1.8, unit: "g", cat: "proteins" }
+    "energy-kcal": { name: "Kalorien", rdi: 2000, unit: "kcal", cat: "cat-macros" },
+    "proteins": { name: "Eiweiß", rdi: 50, unit: "g", cat: "cat-macros" },
+    "carbohydrates": { name: "Kohlenhydrate", rdi: 260, unit: "g", cat: "cat-macros" },
+    "fat": { name: "Fett", rdi: 70, unit: "g", cat: "cat-macros" },
+    "fiber": { name: "Ballaststoffe", rdi: 30, unit: "g", cat: "cat-macros" },
+
+    "vitamin-a": { name: "Vitamin A", rdi: 800, unit: "µg", cat: "cat-vitamins" },
+    "vitamin-c": { name: "Vitamin C", rdi: 80, unit: "mg", cat: "cat-vitamins" },
+    "vitamin-d": { name: "Vitamin D", rdi: 5, unit: "µg", cat: "cat-vitamins" },
+    "vitamin-e": { name: "Vitamin E", rdi: 12, unit: "mg", cat: "cat-vitamins" },
+    "vitamin-b1": { name: "Vitamin B1", rdi: 1.1, unit: "mg", cat: "cat-vitamins" },
+    "vitamin-b2": { name: "Vitamin B2", rdi: 1.4, unit: "mg", cat: "cat-vitamins" },
+    "vitamin-b12": { name: "Vitamin B12", rdi: 2.5, unit: "µg", cat: "cat-vitamins" },
+
+    "calcium": { name: "Calcium", rdi: 800, unit: "mg", cat: "cat-minerals" },
+    "magnesium": { name: "Magnesium", rdi: 375, unit: "mg", cat: "cat-minerals" },
+    "iron": { name: "Eisen", rdi: 14, unit: "mg", cat: "cat-minerals" },
+    "zinc": { name: "Zink", rdi: 10, unit: "mg", cat: "cat-minerals" },
+    "potassium": { name: "Kalium", rdi: 2000, unit: "mg", cat: "cat-minerals" },
+
+    "tryptophan": { name: "Tryptophan", rdi: 0.28, unit: "g", cat: "cat-proteins" },
+    "lysine": { name: "Lysin", rdi: 2.1, unit: "g", cat: "cat-proteins" },
+    "leucine": { name: "Leucin", rdi: 2.7, unit: "g", cat: "cat-proteins" },
+    "valine": { name: "Valin", rdi: 1.8, unit: "g", cat: "cat-proteins" }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('search-button');
-    const input = document.getElementById('food-input');
+document.getElementById('search-button').onclick = fetchData;
+document.getElementById('food-input').onkeydown = (e) => e.key === 'Enter' && fetchData();
 
-    btn.addEventListener('click', startSearch);
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') startSearch();
-    });
-});
-
-async function startSearch() {
-    let query = document.getElementById('food-input').value.trim();
+async function fetchData() {
+    const query = document.getElementById('food-input').value.trim();
     if (!query) return;
 
-    toggleLoading(true);
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('results').classList.add('hidden');
 
     try {
-        // Wir suchen nach 24 Produkten, um den datenreichsten Satz zu finden
-        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=24`;
-        const res = await fetch(url);
-        const data = await res.json();
+        // RADIKALER ANSATZ: Wir suchen nach dem Begriff und filtern nach "Generic" Produkten (CIQUAL)
+        // Das sind die wissenschaftlichen Einträge ohne Marken-Müll.
+        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=50`;
+        const response = await fetch(url);
+        const data = await response.json();
 
         if (data.products && data.products.length > 0) {
-            // Sortierung nach Anzahl der Nährwerte (verhindert 0-Anzeigen)
-            const best = data.products.sort((a, b) => {
-                const count = p => Object.keys(p.nutriments || {}).length;
-                return count(b) - count(a);
-            })[0];
-            renderResults(best);
+            // Wir suchen den Eintrag mit der HÖCHSTEN Anzahl an Nährwerten
+            // Marken haben oft < 10, Laborwerte haben oft > 30
+            const bestResult = data.products.reduce((prev, curr) => {
+                const getCount = p => Object.keys(p.nutriments || {}).length;
+                return getCount(curr) > getCount(prev) ? curr : prev;
+            });
+
+            render(bestResult);
         } else {
             alert("Nichts gefunden.");
         }
     } catch (e) {
-        alert("Fehler bei der Abfrage.");
+        alert("Fehler bei der Suche.");
     } finally {
-        toggleLoading(false);
+        document.getElementById('loading').classList.add('hidden');
     }
 }
 
-function renderResults(product) {
-    document.getElementById('result-title').textContent = product.product_name || "Unbekannt";
-    const ids = { macros: 'body-macros', vitamins: 'body-vitamins', minerals: 'body-minerals', proteins: 'body-proteins' };
-    
-    Object.values(ids).forEach(id => document.getElementById(id).innerHTML = '');
+function render(p) {
+    document.getElementById('food-title').textContent = p.product_name || "Unbekannt";
+    const cats = ["cat-macros", "cat-vitamins", "cat-minerals", "cat-proteins"];
+    cats.forEach(id => document.getElementById(id).innerHTML = '');
 
-    const n = product.nutriments;
+    const n = p.nutriments;
 
     for (const [key, info] of Object.entries(nutrientMap)) {
         let val = n[`${key}_100g`] || n[key] || n[key.replace('-', '_') + '_100g'] || 0;
         
-        // Laborwerte Umrechnung (g -> mg/µg)
+        // Umrechnung von g in mg/µg für Labor-Genauigkeit
         if (info.unit === "mg" && val > 0 && val < 0.5) val *= 1000;
         if (info.unit === "µg" && val > 0 && val < 0.1) val *= 1000000;
 
         const perc = Math.min(100, (val / info.rdi) * 100);
-        
         const html = `
             <div class="row">
-                <div class="row-text">
-                    <span class="label">${info.de}</span>
-                    <span class="val">${val.toLocaleString('de-DE', {maximumFractionDigits: 2})} ${info.unit}</span>
-                </div>
-                <div class="bar-outer">
-                    <div class="bar-inner bar-${info.cat}" style="width:${perc}%"></div>
-                </div>
+                <div class="label-box"><span>${info.name}</span><b>${val.toLocaleString('de-DE', {maximumFractionDigits: 2})} ${info.unit}</b></div>
+                <div class="bar-bg"><div class="bar-fill ${info.cat}" style="width:${perc}%"></div></div>
             </div>`;
-        document.getElementById(ids[info.cat]).innerHTML += html;
+        document.getElementById(info.cat).innerHTML += html;
     }
-    document.getElementById('results-container').classList.remove('hidden');
-}
-
-function toggleLoading(s) {
-    document.getElementById('loading-spinner').classList.toggle('hidden', !s);
-    if(s) document.getElementById('results-container').classList.add('hidden');
+    document.getElementById('results').classList.remove('hidden');
 }
