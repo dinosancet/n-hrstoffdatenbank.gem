@@ -1,22 +1,20 @@
-body { font-family: 'Inter', sans-serif; background: #f9fafb; margin: 0; color: #111827; }
-.search-bar { background: #fff; padding: 20px; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 1000; }
+body { font-family: 'Inter', sans-serif; background: #f4f7f6; margin: 0; color: #333; }
+.search-bar { background: #fff; padding: 20px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
 .search-inner { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; }
-input { flex: 1; padding: 12px; border: 2px solid #d1d5db; border-radius: 10px; font-size: 16px; outline: none; }
-button { padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+input { flex: 1; padding: 12px; border: 2px solid #ccc; border-radius: 8px; outline: none; }
+button { padding: 12px 20px; background: #007bff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 main { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-.ad-slot { background: #f3f4f6; height: 100px; border: 1px dashed #d1d5db; margin: 20px 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #9ca3af; }
-.card { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-h2 { font-size: 14px; text-transform: uppercase; color: #6b7280; margin: 0 0 15px 0; border-bottom: 1px solid #f3f4f6; padding-bottom: 10px; }
-.row { margin-bottom: 14px; }
-.row-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
-.bar-bg { background: #f3f4f6; height: 10px; border-radius: 5px; overflow: hidden; }
-.bar-fill { height: 100%; transition: width 0.6s ease; }
-.fill-macros { background: #10b981; }
-.fill-vitamins { background: #f59e0b; }
-.fill-minerals { background: #ec4899; }
-.fill-aminos { background: #8b5cf6; }
+.card { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+h2 { font-size: 14px; text-transform: uppercase; color: #888; margin-bottom: 15px; }
+.row { margin-bottom: 12px; }
+.row-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
+.bar-bg { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; transition: width 0.5s ease; }
+.fill-macros { background: #28a745; }
+.fill-vitamins { background: #ffc107; }
+.fill-minerals { background: #dc3545; }
+.fill-aminos { background: #6f42c1; }
 .hidden { display: none !important; }
-.spinner { border: 4px solid #f3f4f6; border-top: 4px solid #2563eb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+.spinner { border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 10px auto; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.header-block { text-align: center; margin-bottom: 25px; }
-.badge { background: #eff6ff; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge { background: #e7f3ff; color: #007bff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
