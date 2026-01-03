@@ -12,46 +12,40 @@
 
     <header class="search-bar">
         <div class="search-inner">
-            <input type="text" id="food-input" placeholder="Suchbegriff (z.B. Egg, Salmon, Beef)...">
-            <button id="search-btn">Suchen</button>
+            <input type="text" id="food-input" placeholder="Begriff auf Englisch (z.B. Egg, Salmon)...">
+            <button id="search-btn" type="button">Suchen</button>
         </div>
     </header>
 
     <main id="app">
-        <div class="ad-slot">ANZEIGE - OBEN</div>
-
         <div id="loader" class="hidden">
             <div class="spinner"></div>
-            <p>Lade Labordaten...</p>
+            <p>Daten werden vom Server geladen...</p>
         </div>
 
         <div id="results" class="hidden">
             <div class="header-block">
                 <h1 id="food-title"></h1>
-                <span class="badge">Wissenschaftlicher Datensatz (USDA)</span>
+                <span class="badge">USDA Referenzdaten</span>
             </div>
 
             <section class="card">
-                <h2>1. Energie & Makros</h2>
+                <h2>Energie & Makros</h2>
                 <div id="box-macros"></div>
             </section>
 
-            <div class="ad-slot">ANZEIGE - MITTE</div>
-
             <section class="card">
-                <h2>2. Vitamine</h2>
+                <h2>Vitamine</h2>
                 <div id="box-vitamins"></div>
             </section>
 
             <section class="card">
-                <h2>3. Mineralstoffe</h2>
+                <h2>Mineralstoffe</h2>
                 <div id="box-minerals"></div>
             </section>
 
-            <div class="ad-slot">ANZEIGE - UNTEN</div>
-
             <section class="card">
-                <h2>4. Aminosäuren</h2>
+                <h2>Aminosäuren</h2>
                 <div id="box-aminos"></div>
             </section>
         </div>
