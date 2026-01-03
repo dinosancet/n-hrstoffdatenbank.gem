@@ -1,20 +1,68 @@
-body { font-family: 'Inter', sans-serif; background: #f4f7f6; margin: 0; color: #333; }
-.search-bar { background: #fff; padding: 20px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
-.search-inner { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; }
-input { flex: 1; padding: 12px; border: 2px solid #ccc; border-radius: 8px; outline: none; }
-button { padding: 12px 20px; background: #007bff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-main { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-.card { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-h2 { font-size: 14px; text-transform: uppercase; color: #888; margin-bottom: 15px; }
-.row { margin-bottom: 12px; }
-.row-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
-.bar-bg { background: #eee; height: 8px; border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; transition: width 0.5s ease; }
-.fill-macros { background: #28a745; }
-.fill-vitamins { background: #ffc107; }
-.fill-minerals { background: #dc3545; }
-.fill-aminos { background: #6f42c1; }
-.hidden { display: none !important; }
-.spinner { border: 4px solid #f3f3f3; border-top: 4px solid #007bff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 10px auto; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.badge { background: #e7f3ff; color: #007bff; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+document.addEventListener('DOMContentLoaded', () => {
+    const API_KEY = 'DEMO_KEY';
+    const input = document.getElementById('food-input');
+    const btn = document.getElementById('search-btn');
+
+    async function performSearch() {
+        const query = input.value.trim();
+        if (!query) return;
+
+        // UI vorbereiten
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('results').classList.add('hidden');
+
+        try {
+            // 1. Suche nach dem Lebensmittel
+            const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${encodeURIComponent(query)}&dataType=Foundation`);
+            const data = await res.json();
+
+            if (data.foods && data.foods.length > 0) {
+                // 2. Details abrufen
+                const detailRes = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${data.foods[0].fdcId}?api_key=${API_KEY}`);
+                const food = await detailRes.json();
+                renderData(food);
+            } else {
+                alert("Keine Referenzdaten gefunden. Versuche es mit 'Egg' oder 'Beef'.");
+            }
+        } catch (e) {
+            alert("Verbindung zur Datenbank fehlgeschlagen.");
+        } finally {
+            document.getElementById('loader').classList.add('hidden');
+        }
+    }
+
+    function renderData(food) {
+        document.getElementById('food-title').textContent = food.description;
+        const containers = { macros: 'box-macros', vitamins: 'box-vitamins', minerals: 'box-minerals', aminos: 'box-aminos' };
+        
+        // Alle Boxen leeren
+        Object.values(containers).forEach(id => document.getElementById(id).innerHTML = '');
+
+        food.foodNutrients.forEach(n => {
+            const name = n.nutrient.name;
+            const val = n.amount || 0;
+            const unit = n.nutrient.unitName;
+            let category = "";
+
+            // Kategorisierung nach Text-Erkennung
+            if (name.includes("Vitamin")) category = "vitamins";
+            else if (["Calcium", "Iron", "Magnesium", "Zinc", "Potassium", "Sodium", "Copper", "Manganese", "Selenium"].some(m => name.includes(m))) category = "minerals";
+            else if (["Tryptophan", "Leucine", "Lysine", "Isoleucine", "Threonine", "Valine", "Arginine", "Histidine"].some(a => name.includes(a))) category = "aminos";
+            else if (["Protein", "Total lipid", "Carbohydrate", "Energy", "Fiber"].some(m => name.includes(m))) category = "macros";
+
+            if (category) {
+                const row = `
+                    <div class="row">
+                        <div class="row-info"><span>${name}</span><b>${val.toFixed(2)} ${unit}</b></div>
+                        <div class="bar-bg"><div class="bar-fill fill-${category}" style="width: ${Math.min(val * 2, 100)}%"></div></div>
+                    </div>`;
+                document.getElementById(containers[category]).innerHTML += row;
+            }
+        });
+        document.getElementById('results').classList.remove('hidden');
+    }
+
+    // Such-Trigger
+    btn.onclick = performSearch;
+    input.onkeydown = (e) => { if (e.key === 'Enter') performSearch(); };
+});
