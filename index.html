@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Pro - Wissenschaftliche Analyse</title>
+    <title>Nutrition Pro - Labor-Analyse</title>
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 
     <header class="search-bar">
         <div class="search-inner">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs, Mandeln)...">
+            <input type="text" id="food-input" placeholder="Suchbegriff (z.B. Egg, Salmon, Beef)...">
             <button id="search-btn">Suchen</button>
         </div>
     </header>
@@ -22,17 +22,17 @@
 
         <div id="loader" class="hidden">
             <div class="spinner"></div>
-            <p>Übersetze und lade Labordaten...</p>
+            <p>Lade Labordaten...</p>
         </div>
 
         <div id="results" class="hidden">
             <div class="header-block">
                 <h1 id="food-title"></h1>
-                <span class="badge">Vollständiges Laborprofil (USDA Referenz)</span>
+                <span class="badge">Wissenschaftlicher Datensatz (USDA)</span>
             </div>
 
             <section class="card">
-                <h2>1. Energie & Makronährstoffe</h2>
+                <h2>1. Energie & Makros</h2>
                 <div id="box-macros"></div>
             </section>
 
@@ -51,7 +51,7 @@
             <div class="ad-slot">ANZEIGE - UNTEN</div>
 
             <section class="card">
-                <h2>4. Aminosäuren (Proteinprofil)</h2>
+                <h2>4. Aminosäuren</h2>
                 <div id="box-aminos"></div>
             </section>
         </div>
