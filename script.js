@@ -1,79 +1,86 @@
-const API_KEY = 'DEMO_KEY';
+// Wir kapseln alles in ein Event, damit es erst startet, wenn die Seite da ist
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const API_KEY = 'DEMO_KEY';
+    const input = document.getElementById('food-input');
+    const btn = document.getElementById('search-btn');
 
-const NUTRIENTS = {
-    1008: { name: "Kalorien", unit: "kcal", rdi: 2000, cat: "macros" },
-    1003: { name: "Eiweiß", unit: "g", rdi: 50, cat: "macros" },
-    1004: { name: "Fett", unit: "g", rdi: 70, cat: "macros" },
-    1005: { name: "Kohlenhydrate", unit: "g", rdi: 260, cat: "macros" },
-    1079: { name: "Ballaststoffe", unit: "g", rdi: 30, cat: "macros" },
-    1106: { name: "Vitamin A", unit: "µg", rdi: 800, cat: "vitamins" },
-    1162: { name: "Vitamin C", unit: "mg", rdi: 80, cat: "vitamins" },
-    1114: { name: "Vitamin D", unit: "µg", rdi: 5, cat: "vitamins" },
-    1109: { name: "Vitamin E", unit: "mg", rdi: 12, cat: "vitamins" },
-    1178: { name: "Vitamin B12", unit: "µg", rdi: 2.5, cat: "vitamins" },
-    1087: { name: "Calcium", unit: "mg", rdi: 800, cat: "minerals" },
-    1090: { name: "Magnesium", unit: "mg", rdi: 375, cat: "minerals" },
-    1089: { name: "Eisen", unit: "mg", rdi: 14, cat: "minerals" },
-    1092: { name: "Zink", unit: "mg", rdi: 10, cat: "minerals" },
-    1210: { name: "Tryptophan", unit: "g", rdi: 0.28, cat: "aminos" },
-    1211: { name: "Threonin", unit: "g", rdi: 1.0, cat: "aminos" },
-    1212: { name: "Isoleucin", unit: "g", rdi: 1.4, cat: "aminos" },
-    1213: { name: "Leucin", unit: "g", rdi: 2.7, cat: "aminos" },
-    1214: { name: "Lysin", unit: "g", rdi: 2.1, cat: "aminos" }
-};
+    // Nährstoff-IDs
+    const MAP = {
+        1008: { n: "Kalorien", u: "kcal", r: 2000, c: "macros" },
+        1003: { n: "Eiweiß", u: "g", r: 50, c: "macros" },
+        1004: { n: "Fett", u: "g", r: 70, c: "macros" },
+        1005: { n: "Kohlenhydrate", u: "g", r: 260, c: "macros" },
+        1106: { n: "Vitamin A", u: "µg", r: 800, c: "vitamins" },
+        1162: { n: "Vitamin C", u: "mg", r: 80, c: "vitamins" },
+        1114: { n: "Vitamin D", u: "µg", r: 5, c: "vitamins" },
+        1178: { n: "Vitamin B12", u: "µg", r: 2.5, c: "vitamins" },
+        1087: { n: "Calcium", u: "mg", r: 800, c: "minerals" },
+        1090: { n: "Magnesium", u: "mg", r: 375, c: "minerals" },
+        1089: { n: "Eisen", u: "mg", r: 14, c: "minerals" },
+        1210: { n: "Tryptophan", u: "g", r: 0.28, c: "aminos" },
+        1213: { n: "Leucin", u: "g", r: 2.7, c: "aminos" },
+        1214: { n: "Lysin", u: "g", r: 2.1, c: "aminos" }
+    };
 
-const input = document.getElementById('food-input');
-const btn = document.getElementById('search-btn');
+    // Die Suchfunktion
+    async function performSearch() {
+        const q = input.value.trim();
+        if (!q) return;
 
-btn.onclick = processSearch;
-input.onkeydown = (e) => e.key === 'Enter' && processSearch();
+        console.log("Suche gestartet für:", q);
+        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('results').classList.add('hidden');
 
-async function processSearch() {
-    const rawQuery = input.value.trim();
-    if (!rawQuery) return;
+        try {
+            const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${encodeURIComponent(q)}&dataType=Foundation`);
+            const data = await res.json();
 
-    document.getElementById('loader').classList.remove('hidden');
-    document.getElementById('results').classList.add('hidden');
-
-    try {
-        const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(rawQuery)}&langpair=de|en`);
-        const transData = await transRes.json();
-        const englishQuery = transData.responseData.translatedText;
-
-        const searchRes = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${encodeURIComponent(englishQuery)}&dataType=Foundation`);
-        const searchData = await searchRes.json();
-
-        if (searchData.foods && searchData.foods.length > 0) {
-            const detailRes = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${searchData.foods[0].fdcId}?api_key=${API_KEY}`);
-            const food = await detailRes.json();
-            render(food, rawQuery);
-        } else {
-            alert("Keine Labordaten gefunden.");
+            if (data.foods && data.foods.length > 0) {
+                const id = data.foods[0].fdcId;
+                const detail = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${id}?api_key=${API_KEY}`);
+                const food = await detail.json();
+                
+                showData(food);
+            } else {
+                alert("Keine Ergebnisse. Bitte nutzen Sie englische Begriffe (z.B. 'Egg').");
+            }
+        } catch (e) {
+            console.error("Fehler beim Abrufen:", e);
+            alert("Fehler bei der Verbindung zur Datenbank.");
+        } finally {
+            document.getElementById('loader').classList.add('hidden');
         }
-    } catch (err) {
-        alert("Fehler bei der Abfrage.");
-    } finally {
-        document.getElementById('loader').classList.add('hidden');
     }
-}
 
-function render(food, originalName) {
-    document.getElementById('food-title').textContent = originalName.charAt(0).toUpperCase() + originalName.slice(1);
-    const containers = { macros: 'box-macros', vitamins: 'box-vitamins', minerals: 'box-minerals', aminos: 'box-aminos' };
-    Object.values(containers).forEach(id => document.getElementById(id).innerHTML = '');
+    function showData(food) {
+        document.getElementById('food-title').textContent = food.description;
+        const boxes = { macros: 'box-macros', vitamins: 'box-vitamins', minerals: 'box-minerals', aminos: 'box-aminos' };
+        
+        // Alle Boxen leeren
+        Object.values(boxes).forEach(b => document.getElementById(b).innerHTML = '');
 
-    food.foodNutrients.forEach(n => {
-        const info = NUTRIENTS[n.nutrient.id];
-        if (info) {
-            const val = n.amount || 0;
-            const perc = Math.min(100, (val / info.rdi) * 100);
-            const row = `
-                <div class="row">
-                    <div class="row-info"><span>${info.name}</span><b>${val.toFixed(2)} ${info.unit}</b></div>
-                    <div class="bar-bg"><div class="bar-fill fill-${info.cat}" style="width:${perc}%"></div></div>
-                </div>`;
-            document.getElementById(containers[info.cat]).innerHTML += row;
-        }
+        food.foodNutrients.forEach(n => {
+            const config = MAP[n.nutrient.id];
+            if (config) {
+                const val = n.amount || 0;
+                const perc = Math.min(100, (val / config.r) * 100);
+                const html = `
+                    <div class="row">
+                        <div class="row-info"><span>${config.n}</span><b>${val.toFixed(2)} ${config.u}</b></div>
+                        <div class="bar-bg"><div class="bar-fill fill-${config.c}" style="width:${perc}%"></div></div>
+                    </div>`;
+                document.getElementById(boxes[config.c]).innerHTML += html;
+            }
+        });
+        document.getElementById('results').classList.remove('hidden');
+    }
+
+    // Event-Listener zuweisen
+    btn.addEventListener('click', performSearch);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
     });
-    document.getElementById('results').classList.remove('hidden');
-}
+
+    console.log("App bereit. Event-Listener wurden gebunden.");
+});
