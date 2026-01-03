@@ -1,22 +1,81 @@
-body { font-family: 'Inter', sans-serif; background: #f9fafb; margin: 0; color: #111827; }
-.search-bar { background: #fff; padding: 20px; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 1000; }
-.search-inner { max-width: 500px; margin: 0 auto; display: flex; gap: 10px; }
-input { flex: 1; padding: 12px; border: 2px solid #d1d5db; border-radius: 10px; font-size: 16px; outline: none; }
-button { padding: 12px 24px; background: #2563eb; color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
-main { max-width: 500px; margin: 20px auto; padding: 0 15px; }
-.ad-slot { background: #f3f4f6; height: 100px; border: 1px dashed #d1d5db; margin: 20px 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #9ca3af; }
-.card { background: #fff; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-h2 { font-size: 14px; text-transform: uppercase; color: #6b7280; margin: 0 0 15px 0; border-bottom: 1px solid #f3f4f6; padding-bottom: 10px; }
-.row { margin-bottom: 14px; }
-.row-info { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
-.bar-bg { background: #f3f4f6; height: 10px; border-radius: 5px; overflow: hidden; }
-.bar-fill { height: 100%; transition: width 0.6s ease; }
-.fill-macros { background: #10b981; }
-.fill-vitamins { background: #f59e0b; }
-.fill-minerals { background: #ec4899; }
-.fill-aminos { background: #8b5cf6; }
-.hidden { display: none !important; }
-.spinner { border: 4px solid #f3f4f6; border-top: 4px solid #2563eb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.header-block { text-align: center; margin-bottom: 25px; }
-.badge { background: #eff6ff; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+const NUTRIENTS_MAP = {
+    1008: { name: "Kalorien", unit: "kcal", rdi: 2000, cat: "macros" },
+    1003: { name: "Eiweiß", unit: "g", rdi: 50, cat: "macros" },
+    1004: { name: "Fett", unit: "g", rdi: 70, cat: "macros" },
+    1005: { name: "Kohlenhydrate", unit: "g", rdi: 260, cat: "macros" },
+    1079: { name: "Ballaststoffe", unit: "g", rdi: 30, cat: "macros" },
+    1106: { name: "Vitamin A", unit: "µg", rdi: 800, cat: "vitamins" },
+    1162: { name: "Vitamin C", unit: "mg", rdi: 80, cat: "vitamins" },
+    1114: { name: "Vitamin D", unit: "µg", rdi: 5, cat: "vitamins" },
+    1109: { name: "Vitamin E", unit: "mg", rdi: 12, cat: "vitamins" },
+    1178: { name: "Vitamin B12", unit: "µg", rdi: 2.5, cat: "vitamins" },
+    1087: { name: "Calcium", unit: "mg", rdi: 800, cat: "minerals" },
+    1090: { name: "Magnesium", unit: "mg", rdi: 375, cat: "minerals" },
+    1089: { name: "Eisen", unit: "mg", rdi: 14, cat: "minerals" },
+    1092: { name: "Zink", unit: "mg", rdi: 10, cat: "minerals" },
+    1210: { name: "Tryptophan", unit: "g", rdi: 0.28, cat: "aminos" },
+    1211: { name: "Threonin", unit: "g", rdi: 1.0, cat: "aminos" },
+    1212: { name: "Isoleucin", unit: "g", rdi: 1.4, cat: "aminos" },
+    1213: { name: "Leucin", unit: "g", rdi: 2.7, cat: "aminos" },
+    1214: { name: "Lysin", unit: "g", rdi: 2.1, cat: "aminos" }
+};
+
+// Direkte Selektierung der Elemente
+const inputField = document.getElementById('food-input');
+const searchBtn = document.getElementById('search-btn');
+
+// Event Listener
+searchBtn.onclick = function() { executeSearch(); };
+inputField.onkeydown = function(e) { if (e.key === 'Enter') executeSearch(); };
+
+async function executeSearch() {
+    const query = inputField.value.trim();
+    if (!query) return;
+
+    document.getElementById('loader').classList.remove('hidden');
+    document.getElementById('results').classList.add('hidden');
+
+    try {
+        const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=${encodeURIComponent(query)}&dataType=Foundation`);
+        const data = await res.json();
+
+        if (data.foods && data.foods.length > 0) {
+            const fdcId = data.foods[0].fdcId;
+            const detailRes = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${fdcId}?api_key=DEMO_KEY`);
+            const foodData = await detailRes.json();
+            displayNutrients(foodData);
+        } else {
+            alert("Nichts gefunden. Versuche es mit einem englischen Begriff wie 'Egg' oder 'Salmon'.");
+        }
+    } catch (error) {
+        alert("Datenbank-Fehler. Versuche es gleich noch einmal.");
+    } finally {
+        document.getElementById('loader').classList.add('hidden');
+    }
+}
+
+function displayNutrients(food) {
+    document.getElementById('food-title').textContent = food.description;
+    const targets = { macros: 'box-macros', vitamins: 'box-vitamins', minerals: 'box-minerals', aminos: 'box-aminos' };
+    
+    Object.values(targets).forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.innerHTML = '';
+    });
+
+    food.foodNutrients.forEach(n => {
+        const config = NUTRIENTS_MAP[n.nutrient.id];
+        if (config) {
+            const val = n.amount || 0;
+            const perc = Math.min(100, (val / config.rdi) * 100);
+            const rowHtml = `
+                <div class="row">
+                    <div class="row-info"><span>${config.name}</span><b>${val.toFixed(2)} ${config.unit}</b></div>
+                    <div class="bar-bg"><div class="bar-fill fill-${config.cat}" style="width:${perc}%"></div></div>
+                </div>`;
+            const container = document.getElementById(targets[config.cat]);
+            if(container) container.innerHTML += rowHtml;
+        }
+    });
+    document.getElementById('results').classList.remove('hidden');
+}
