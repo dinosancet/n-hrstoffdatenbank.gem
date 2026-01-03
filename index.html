@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Pro - Nährwert Analyse</title>
+    <title>Nutrition Pro - Labor-Analyse</title>
     <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 
     <header class="main-header">
         <div class="search-area">
-            <input type="text" id="food-input" placeholder="Lebensmittel suchen..." autocomplete="off">
+            <input type="text" id="food-input" placeholder="Lebensmittel suchen (z.B. Ei, Lachs)..." autocomplete="off">
             <button id="search-btn">Suchen</button>
         </div>
     </header>
@@ -28,11 +28,11 @@
         <div id="output" class="hidden">
             <div class="result-head">
                 <h1 id="food-name"></h1>
-                <span class="lab-badge">Laborgeprüfte Referenzdaten</span>
+                <span class="lab-badge">Labor-Referenzdatensatz</span>
             </div>
 
             <section class="result-card">
-                <h2>Energie & Makros</h2>
+                <h2>Energie & Makronährstoffe</h2>
                 <div id="box-macros"></div>
             </section>
 
@@ -44,14 +44,14 @@
             </section>
 
             <section class="result-card">
-                <h2>Mineralstoffe</h2>
+                <h2>Mineralstoffe & Spurenelemente</h2>
                 <div id="box-minerals"></div>
             </section>
 
             <div class="ad-placeholder">WERBUNG - UNTEN</div>
 
             <section class="result-card">
-                <h2>Aminosäuren (Proteinprofil)</h2>
+                <h2>Aminosäuren (Vollständiges Profil)</h2>
                 <div id="box-proteins"></div>
             </section>
         </div>
