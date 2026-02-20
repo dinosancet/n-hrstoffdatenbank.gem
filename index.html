@@ -3,54 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Pro - Labor-Analyse</title>
-    <meta name="google-site-verification" content="GG23t0FCKUF_-JsHRIvkcrvFE5ls6rhsqvQMigygXgg" />
+    <title>NutritionPro | Die wissenschaftliche Analyse</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <header class="search-bar">
-        <div class="search-inner">
-            <input type="text" id="food-input" placeholder="Englischer Begriff (z.B. Egg, Salmon, Apple)...">
-            <button id="search-btn" type="button">Suchen</button>
-        </div>
-    </header>
-
-    <main id="app">
-        <div id="loader" class="hidden">
-            <div class="spinner"></div>
-            <p>Laborwerte werden geladen...</p>
-        </div>
-
-        <div id="results" class="hidden">
-            <div class="header-block">
-                <h1 id="food-title"></h1>
-                <span class="badge">Wissenschaftlicher USDA-Datensatz</span>
+    <div class="container">
+        <header>
+            <h1>Nährwert<span>Check</span></h1>
+            <p>Vollständige Labor-Analyse aller Nährstoffe</p>
+            <div class="search-box">
+                <input type="text" id="food-search" placeholder="Lebensmittel suchen..." autocomplete="off">
+                <div id="autocomplete-list" class="autocomplete-items"></div>
             </div>
+        </header>
 
-            <section class="card">
-                <h2>Energie & Makros</h2>
-                <div id="box-macros"></div>
-            </section>
+        <main id="result-area" class="hidden">
+            <h2 id="display-name">Lebensmittel Name</h2>
+            
+            <div class="grid">
+                <div class="card border-macros">
+                    <h3><span class="dot macros"></span> Makronährstoffe</h3>
+                    <table id="table-macros"></table>
+                </div>
 
-            <section class="card">
-                <h2>Vitamine</h2>
-                <div id="box-vitamins"></div>
-            </section>
+                <div class="card border-vitamins">
+                    <h3><span class="dot vitamins"></span> Vitamine</h3>
+                    <table id="table-vitamins"></table>
+                </div>
 
-            <section class="card">
-                <h2>Mineralstoffe</h2>
-                <div id="box-minerals"></div>
-            </section>
+                <div class="card border-minerals">
+                    <h3><span class="dot minerals"></span> Mineralstoffe</h3>
+                    <table id="table-minerals"></table>
+                </div>
 
-            <section class="card">
-                <h2>Aminosäuren</h2>
-                <div id="box-aminos"></div>
-            </section>
-        </div>
-    </main>
-
+                <div class="card border-aminos">
+                    <h3><span class="dot aminos"></span> Aminosäuren</h3>
+                    <table id="table-aminos"></table>
+                </div>
+            </div>
+        </main>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
