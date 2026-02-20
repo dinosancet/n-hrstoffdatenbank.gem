@@ -1,36 +1,39 @@
- document.addEventListener('DOMContentLoaded', async () => {
-    let db = [];
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const db = [
+        {
+            "name": "Hühnerei (Ganz, frisch)",
+            "macros": {"Energie": "143 kcal", "Protein": "12.6g", "Fett": "9.5g", "KH": "0.7g"},
+            "vitamins": {"Vit A": "140µg", "Vit D": "2.0µg", "Vit B12": "0.9µg"},
+            "minerals": {"Calcium": "56mg", "Eisen": "1.8mg", "Zink": "1.3mg"},
+            "aminos": {"Leucin": "1.08g", "Lysin": "0.90g", "Valin": "0.76g"}
+        },
+        {
+            "name": "Lachs (Atlantik, roh)",
+            "macros": {"Energie": "208 kcal", "Protein": "20.4g", "Fett": "13.4g", "KH": "0g"},
+            "vitamins": {"Vit D": "11µg", "Vit B12": "3.2µg"},
+            "minerals": {"Magnesium": "27mg", "Kalium": "363mg"},
+            "aminos": {"Leucin": "1.66g", "Lysin": "1.87g"}
+        }
+    ];
+
     const searchInput = document.getElementById('food-search');
     const suggestBox = document.getElementById('autocomplete-list');
     const resultArea = document.getElementById('result-area');
-    const statusMsg = document.getElementById('status-msg');
 
-    // 1. Absolut sicheres Laden der Daten
-    async function loadDatabase() {
-        try {
-            // Wir erzwingen Kleinschreibung beim Dateinamen!
-            const response = await fetch('./food_db.json'); 
-            if (!response.ok) throw new Error(`Server antwortet mit Status ${response.status}`);
-            db = await response.json();
-            statusMsg.textContent = "Datenbank bereit. Suche starten!";
-            statusMsg.style.color = "green";
-        } catch (e) {
-            statusMsg.textContent = "FEHLER: food_db.json nicht gefunden oder fehlerhaft!";
-            statusMsg.style.color = "red";
-            console.error(e);
-        }
-    }
-
-    // 2. Suche
     searchInput.addEventListener('input', () => {
         const val = searchInput.value.toLowerCase().trim();
         suggestBox.innerHTML = '';
+        
         if (val.length < 2) return;
 
-        const matches = db.filter(f => f.name.toLowerCase().includes(val)).slice(0, 8);
+        const matches = db.filter(f => f.name.toLowerCase().includes(val));
+        
         matches.forEach(m => {
             const div = document.createElement('div');
             div.textContent = m.name;
+            div.style.padding = "10px";
+            div.style.cursor = "pointer";
             div.onclick = () => {
                 searchInput.value = m.name;
                 suggestBox.innerHTML = '';
@@ -52,18 +55,12 @@
         for (const [tableId, data] of Object.entries(sections)) {
             const table = document.getElementById(tableId);
             table.innerHTML = '';
-            if (data && Object.keys(data).length > 0) {
-                for (const [key, val] of Object.entries(data)) {
-                    const row = table.insertRow();
-                    row.insertCell(0).textContent = key;
-                    row.insertCell(1).textContent = val;
-                }
-            } else {
-                table.innerHTML = '<tr><td>Keine Daten</td></tr>';
+            for (const [key, val] of Object.entries(data)) {
+                const row = table.insertRow();
+                row.insertCell(0).textContent = key;
+                row.insertCell(1).textContent = val;
             }
         }
         resultArea.classList.remove('hidden');
     }
-
-    await loadDatabase();
 });
