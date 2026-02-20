@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Hühnerei (Ganz, frisch)",
+    "macros": {"Energie": "143 kcal", "Protein": "12.6g", "Fett": "9.5g", "Kohlenhydrate": "0.7g", "Ballaststoffe": "0g"},
+    "vitamins": {"Vitamin A": "140µg", "Vitamin D": "2.0µg", "Vitamin E": "1.1mg", "Vitamin B12": "0.9µg", "Folsäure": "47µg"},
+    "minerals": {"Calcium": "56mg", "Eisen": "1.8mg", "Magnesium": "12mg", "Zink": "1.3mg", "Kalium": "138mg"},
+    "aminos": {"Leucin": "1.08g", "Lysin": "0.90g", "Valin": "0.76g", "Isoleucin": "0.67g", "Tryptophan": "0.15g"}
+  },
+  {
+    "name": "Lachs (Atlantik, roh)",
+    "macros": {"Energie": "208 kcal", "Protein": "20.4g", "Fett": "13.4g", "Kohlenhydrate": "0g"},
+    "vitamins": {"Vitamin D": "11µg", "Vitamin B12": "3.2µg", "Vitamin B6": "0.6mg"},
+    "minerals": {"Magnesium": "27mg", "Kalium": "363mg", "Selen": "24µg", "Eisen": "0.3mg"},
+    "aminos": {"Leucin": "1.66g", "Lysin": "1.87g", "Valin": "1.05g", "Arginin": "1.2g"}
+  },
+  {
+    "name": "Rinderfilet (mager, roh)",
+    "macros": {"Energie": "143 kcal", "Protein": "22.1g", "Fett": "6.1g", "Kohlenhydrate": "0g"},
+    "vitamins": {"Vitamin B12": "1.3µg", "Vitamin B6": "0.6mg", "Niacin": "5.7mg"},
+    "minerals": {"Eisen": "2.4mg", "Zink": "4.4mg", "Magnesium": "22mg", "Kalium": "350mg"},
+    "aminos": {"Leucin": "1.78g", "Lysin": "1.92g", "Arginin": "1.45g", "Valin": "1.1g"}
+  }
+]
