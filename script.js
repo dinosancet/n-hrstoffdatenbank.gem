@@ -1,68 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const API_KEY = 'DEMO_KEY';
-    const input = document.getElementById('food-input');
-    const btn = document.getElementById('search-btn');
+document.addEventListener('DOMContentLoaded', async () => {
+    let db = [];
+    const searchInput = document.getElementById('food-search');
+    const suggestBox = document.getElementById('autocomplete-list');
+    const resultArea = document.getElementById('result-area');
 
-    async function performSearch() {
-        const query = input.value.trim();
-        if (!query) return;
-
-        // UI vorbereiten
-        document.getElementById('loader').classList.remove('hidden');
-        document.getElementById('results').classList.add('hidden');
-
-        try {
-            // 1. Suche nach dem Lebensmittel
-            const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&query=${encodeURIComponent(query)}&dataType=Foundation`);
-            const data = await res.json();
-
-            if (data.foods && data.foods.length > 0) {
-                // 2. Details abrufen
-                const detailRes = await fetch(`https://api.nal.usda.gov/fdc/v1/food/${data.foods[0].fdcId}?api_key=${API_KEY}`);
-                const food = await detailRes.json();
-                renderData(food);
-            } else {
-                alert("Keine Referenzdaten gefunden. Versuche es mit 'Egg' oder 'Beef'.");
-            }
-        } catch (e) {
-            alert("Verbindung zur Datenbank fehlgeschlagen.");
-        } finally {
-            document.getElementById('loader').classList.add('hidden');
-        }
+    // 1. Daten laden
+    try {
+        const response = await fetch('food_db.json');
+        db = await response.json();
+        console.log("DB geladen");
+    } catch (e) {
+        console.error("Fehler beim Laden der food_db.json");
     }
 
-    function renderData(food) {
-        document.getElementById('food-title').textContent = food.description;
-        const containers = { macros: 'box-macros', vitamins: 'box-vitamins', minerals: 'box-minerals', aminos: 'box-aminos' };
-        
-        // Alle Boxen leeren
-        Object.values(containers).forEach(id => document.getElementById(id).innerHTML = '');
+    // 2. Such-Logik
+    searchInput.addEventListener('input', () => {
+        const val = searchInput.value.toLowerCase();
+        suggestBox.innerHTML = '';
+        if (val.length < 2) return;
 
-        food.foodNutrients.forEach(n => {
-            const name = n.nutrient.name;
-            const val = n.amount || 0;
-            const unit = n.nutrient.unitName;
-            let category = "";
-
-            // Kategorisierung nach Text-Erkennung
-            if (name.includes("Vitamin")) category = "vitamins";
-            else if (["Calcium", "Iron", "Magnesium", "Zinc", "Potassium", "Sodium", "Copper", "Manganese", "Selenium"].some(m => name.includes(m))) category = "minerals";
-            else if (["Tryptophan", "Leucine", "Lysine", "Isoleucine", "Threonine", "Valine", "Arginine", "Histidine"].some(a => name.includes(a))) category = "aminos";
-            else if (["Protein", "Total lipid", "Carbohydrate", "Energy", "Fiber"].some(m => name.includes(m))) category = "macros";
-
-            if (category) {
-                const row = `
-                    <div class="row">
-                        <div class="row-info"><span>${name}</span><b>${val.toFixed(2)} ${unit}</b></div>
-                        <div class="bar-bg"><div class="bar-fill fill-${category}" style="width: ${Math.min(val * 2, 100)}%"></div></div>
-                    </div>`;
-                document.getElementById(containers[category]).innerHTML += row;
-            }
+        const matches = db.filter(f => f.name.toLowerCase().includes(val)).slice(0, 8);
+        matches.forEach(m => {
+            const div = document.createElement('div');
+            div.textContent = m.name;
+            div.onclick = () => {
+                searchInput.value = m.name;
+                suggestBox.innerHTML = '';
+                renderFood(m);
+            };
+            suggestBox.appendChild(div);
         });
-        document.getElementById('results').classList.remove('hidden');
-    }
+    });
 
-    // Such-Trigger
-    btn.onclick = performSearch;
-    input.onkeydown = (e) => { if (e.key === 'Enter') performSearch(); };
-});  
+    function renderFood(food) {
+        document.getElementById('display-name').textContent = food.name;
+        
+        const sections = {
+            'table-macros': food.macros,
+            'table-vitamins': food.vitamins,
+            'table-minerals': food.minerals,
+            'table-aminos': food.aminos
+        };
+
+        for (const [tableId, data] of Object.entries(sections)) {
+            const table = document.getElementById(tableId);
+            table.innerHTML = '';
+            if (data && Object.keys(data).length > 0) {
+                for (const [key, val] of Object.entries(data)) {
+                    table.innerHTML += `<tr><td>${key}</td><td>${val}</td></tr>`;
+                }
+            } else {
+                table.innerHTML = '<tr><td>Keine Daten vorhanden</td></tr>';
+            }
+        }
+        resultArea.classList.remove('hidden');
+    }
+});
