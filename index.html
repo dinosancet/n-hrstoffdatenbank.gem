@@ -3,44 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutritionPro | Die wissenschaftliche Analyse</title>
+    <title>NutritionPro | Labor-Analyse</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Nährwert<span>Check</span></h1>
-            <p>Vollständige Labor-Analyse aller Nährstoffe</p>
+            <p id="status-msg">Initialisiere Datenbank...</p>
             <div class="search-box">
-                <input type="text" id="food-search" placeholder="Lebensmittel suchen..." autocomplete="off">
+                <input type="text" id="food-search" placeholder="Lebensmittel suchen (z.B. Ei)..." autocomplete="off">
                 <div id="autocomplete-list" class="autocomplete-items"></div>
             </div>
         </header>
 
         <main id="result-area" class="hidden">
-            <h2 id="display-name">Lebensmittel Name</h2>
-            
+            <h2 id="display-name"></h2>
             <div class="grid">
-                <div class="card border-macros">
-                    <h3><span class="dot macros"></span> Makronährstoffe</h3>
-                    <table id="table-macros"></table>
-                </div>
-
-                <div class="card border-vitamins">
-                    <h3><span class="dot vitamins"></span> Vitamine</h3>
-                    <table id="table-vitamins"></table>
-                </div>
-
-                <div class="card border-minerals">
-                    <h3><span class="dot minerals"></span> Mineralstoffe</h3>
-                    <table id="table-minerals"></table>
-                </div>
-
-                <div class="card border-aminos">
-                    <h3><span class="dot aminos"></span> Aminosäuren</h3>
-                    <table id="table-aminos"></table>
-                </div>
+                <div class="card"><h3 class="macros">Makros</h3><table id="table-macros"></table></div>
+                <div class="card"><h3 class="vitamins">Vitamine</h3><table id="table-vitamins"></table></div>
+                <div class="card"><h3 class="minerals">Mineralien</h3><table id="table-minerals"></table></div>
+                <div class="card"><h3 class="aminos">Aminosäuren</h3><table id="table-aminos"></table></div>
             </div>
         </main>
     </div>
